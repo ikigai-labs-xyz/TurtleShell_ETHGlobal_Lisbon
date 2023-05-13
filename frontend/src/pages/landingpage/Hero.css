@@ -1,11 +1,20 @@
 .hero {
   color: #DBDBDB;
-  padding: 100px 100px;
+  padding: 10px 100px;
   text-align: center;
 
-  margin-top: 250px;
-  margin-bottom: 250px;
+  margin-top: 5px;
+  margin-bottom: 50px;
+
   
+}
+
+.section1 {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column-reverse;
+  align-items: center;
+  margin-top: 80px;
 }
 
 .hero h1 {
