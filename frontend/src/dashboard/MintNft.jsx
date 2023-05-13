@@ -1,7 +1,7 @@
 import ContractCard from "../components/dashboard/ContractCard"
-import { chainIdToExplorerUrl, chainIdToName } from "../utils/chainMapping"
+import Spinner from "../components/Spinner"
 
-export default function MintNft({ contract }) {
+export default function MintNft({ contract, loading, mintNft }) {
   return (
     <>
       <div className="w-full items-center justify-between mb-4">
@@ -14,11 +14,22 @@ export default function MintNft({ contract }) {
       </div>
 
       <div className="mb-4 flex flex-wrap justify-center text-sm">
+        {loading && <Spinner />}
+
         <ContractCard
           isSelected={true}
           setSelectedContract={null}
           contract={contract}
         />
+      </div>
+
+      <div className="text-center">
+        <button
+          onClick={() => mintNft()}
+          className={`px-4 py-2 mb-3 text-sm font-semibold bg-gradient-to-br from-[#5C2C69] to-#2C4C84 border-transparent rounded-full w-fit text-[#C2C2C2]`}
+        >
+          {loading ? <Spinner /> : "Mint Badge"}
+        </button>
       </div>
     </>
   )

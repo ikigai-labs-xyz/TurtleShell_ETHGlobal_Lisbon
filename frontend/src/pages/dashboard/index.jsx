@@ -141,7 +141,13 @@ export default function Dashboard() {
         break
 
       case PageState.mintNft:
-        content = <MintNft />
+        content = (
+          <MintNft
+            contract={selectedContract}
+            loading={loading}
+            mintNft={onMint}
+          />
+        )
     }
 
     return content
