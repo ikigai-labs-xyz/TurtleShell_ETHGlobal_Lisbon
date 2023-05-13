@@ -1,6 +1,7 @@
+import classNames from "classnames"
+import { BsArrowRightShort } from "react-icons/bs"
 import Spinner from "../Spinner"
 import ContractCard, { CardType } from "./ContractCard"
-import { BsArrowRightShort } from "react-icons/bs"
 
 export default function PerformAudit({
   getContractsLoading,
@@ -24,7 +25,7 @@ export default function PerformAudit({
 
         {loaded && contracts && contracts.length === 0 && (
           <div className="text-[#8594AB] text-xl">
-            No contracts from this wallet address found on this chain.
+            No contracts from this wallet address found.
           </div>
         )}
 
@@ -55,7 +56,11 @@ export default function PerformAudit({
       <div className="text-center">
         <button
           onClick={() => performAudit(selectedContract)}
-          className={`px-4 py-2 mb-3 text-sm font-semibold bg-gradient-to-br from-[#5C2C69] to-#2C4C84 border-transparent rounded-full w-fit text-[#C2C2C2]`}
+          className={classNames(
+            `px-4 py-2 mb-3 text-sm font-semibold bg-gradient-to-br from-[#5C2C69] to-#2C4C84 border-transparent rounded-full w-fit text-[#C2C2C2]`,
+            selectedContract?.address === "" && "opacity-50 cursor-not-allowed"
+          )}
+          disabled={selectedContract?.address === ""}
         >
           {loading ? (
             <Spinner />

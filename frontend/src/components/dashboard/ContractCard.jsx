@@ -31,7 +31,8 @@ export default function ContractCard({
   }
 
   const explorerUrl = chainIdToExplorerUrl[contract.chain?.toString()]
-  const explorerFullurl = explorerUrl && `${explorerUrl}${contract.address}`
+  const explorerFullurl =
+    explorerUrl && `${explorerUrl}/address/${contract.address}`
 
   return (
     <div
