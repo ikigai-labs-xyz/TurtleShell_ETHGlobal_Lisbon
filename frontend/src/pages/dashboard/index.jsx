@@ -32,8 +32,8 @@ export default function Dashboard() {
   const { data: signer } = useSigner()
 
   const [selectedContract, setSelectedContract] = useState({
-    address: "",
-    chain: 0,
+    address: "0x081E56a6b25C2A42A91996e6Bb655641c101FD99",
+    chain: 80001,
   })
 
   const [loading, setLoading] = useState(false)
