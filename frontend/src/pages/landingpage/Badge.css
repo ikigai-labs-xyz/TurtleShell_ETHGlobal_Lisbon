@@ -13,8 +13,8 @@
 }
 
 .section-image img {
-  width: 100%;
-  max-height: 400px;
+  width: 150%;
+  max-height: 1000px; /* Increase the max height as needed */
 }
 
 .section-text {

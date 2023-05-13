@@ -15,8 +15,8 @@ const Landingpage = () => (
 	  <Badge/>
 	  <Standards/>
 	  <Ecosystem/>
-	  <Footer/>
 	  </div>
+	  <Footer/>
 	</>
   );
   
