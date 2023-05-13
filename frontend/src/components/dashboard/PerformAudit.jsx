@@ -1,4 +1,4 @@
-import classNames from "classnames"
+import classNames from "classNames"
 import { BsArrowRightShort } from "react-icons/bs"
 import Spinner from "../Spinner"
 import ContractCard, { CardType } from "./ContractCard"
