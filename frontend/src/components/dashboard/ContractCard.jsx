@@ -90,23 +90,16 @@ export default function ContractCard({
       </div>
 
       {cardType === CardType.onPerform && (
-        <>
-          <div>
-            <div>date deployed</div>
-            {/* {new Date(contract.date).toLocaleString()} */}
-          </div>
-
-          <div className="flex justify-center mt-4 cursor-pointer">
-            <img
-              src={
-                isSelected ? "/checkbox_checked.svg" : "/checkbox_unchecked.svg"
-              }
-              alt="unchecked checkbox"
-              width={48}
-              height={48}
-            />
-          </div>
-        </>
+        <div className="flex justify-center mt-4 cursor-pointer">
+          <img
+            src={
+              isSelected ? "/checkbox_checked.svg" : "/checkbox_unchecked.svg"
+            }
+            alt="unchecked checkbox"
+            width={48}
+            height={48}
+          />
+        </div>
       )}
 
       {cardType === CardType.onMint && (

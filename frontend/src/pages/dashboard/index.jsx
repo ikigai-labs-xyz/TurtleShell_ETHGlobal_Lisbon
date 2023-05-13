@@ -13,6 +13,8 @@ import {
   uploadToIpfs,
 } from "../../utils/api"
 import { turtleContract } from "../../utils/contracts"
+import { useAccount } from "wagmi"
+import NoWallet from "../../components/dashboard/NoWallet"
 
 const PageState = {
   performAudit: "performAudit",
@@ -21,6 +23,8 @@ const PageState = {
 
 export default function Dashboard() {
   const [pageState, setPageState] = useState(PageState.performAudit)
+
+  const { address } = useAccount()
 
   const [selectedContract, setSelectedContract] = useState({
     address: ethers.constants.AddressZero,
@@ -31,9 +35,7 @@ export default function Dashboard() {
   const [score, setScore] = useState("")
   const [contractType, setContractType] = useState("")
 
-  const { loading: getContractsLoading, contracts } = useGetContracts(
-    "0x4bFC74983D6338D3395A00118546614bB78472c2"
-  )
+  const { loading: getContractsLoading, contracts } = useGetContracts(address)
 
   async function performAudit(selectedContract, retryCount = 0) {
     if (!selectedContract) return
@@ -150,6 +152,12 @@ export default function Dashboard() {
 
   function renderContent() {
     let content = ""
+    if (!address) {
+      content = <NoWallet />
+
+      return content
+    }
+
     switch (pageState) {
       case PageState.performAudit:
         content = (
