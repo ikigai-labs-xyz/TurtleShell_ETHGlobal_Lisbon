@@ -34,6 +34,7 @@ export default function Dashboard() {
   const [audits, setAudits] = useState("")
   const [score, setScore] = useState("")
   const [contractType, setContractType] = useState("")
+  const [error, setError] = useState("")
 
   const { loading: getContractsLoading, contracts } = useGetContracts(address)
 
@@ -41,12 +42,33 @@ export default function Dashboard() {
     if (!selectedContract) return
 
     try {
+      setError("")
       setLoading(true)
 
-      const sourceCode = getSourceCodeOfContract(
+      const sourceCode = await getSourceCodeOfContract(
         selectedContract.address,
         selectedContract.chain
       )
+      console.log("sourceCode", sourceCode)
+
+      if (
+        sourceCode.data &&
+        typeof sourceCode.data?.sources === "string" &&
+        sourceCode?.data.sources === ""
+      ) {
+        setError("No audits found. This contract might not have been verified.")
+      }
+
+      if (!sourceCode) {
+        if (retryCount < 3) {
+          console.log(
+            `Failed to retrieve audits or score, trying again retry count ${++retryCount}`
+          )
+          performAudit(selectedContract, ++retryCount)
+        } else {
+          throw new Error("Failed to retrieve audits or score")
+        }
+      }
 
       const [audits, contractType] = await Promise.all([
         getAuditsOfContract(sourceCode.data),
@@ -110,7 +132,7 @@ export default function Dashboard() {
       }
       const ipfsCid = await uploadToIpfs(ipfsData)
 
-      if (!ipfsCid || typeof ipfsCid !== "string") {
+      if (!ipfsCid.status !== 200) {
         if (retryCount < 3) {
           console.log(
             `Failed to upload to IPFS, trying again retry count ${++retryCount}`
@@ -129,7 +151,7 @@ export default function Dashboard() {
         contractType
       )
 
-      if (!signature || typeof signature !== "string") {
+      if (!signature.status !== 200) {
         if (retryCount < 3) {
           console.log(
             `Failed to retrieve signature, trying again retry count ${++retryCount}`
@@ -191,6 +213,8 @@ export default function Dashboard() {
     <div className="h-screen w-screen">
       <NavBar />
       <main className=" flex min-h-screen flex-col items-center justify-between p-24">
+        {error && <div className="text-red-500 text-xl">{error}</div>}
+
         {renderContent()}
       </main>
     </div>
