@@ -44,5 +44,5 @@ export const getBackendSignature = (
     contractType,
   })
 
-  return axios.get(`${backendUrl}/getSignature${urlParam}`)
+  return axios.get(`${backendUrl}/getSignature?${urlParam}`)
 }

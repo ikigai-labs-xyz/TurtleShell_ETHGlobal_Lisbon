@@ -1,4 +1,3 @@
-import { ethers } from "ethers"
 import { useState } from "react"
 import MintNft from "../../components/dashboard/MintNft"
 import NavBar from "../../components/dashboard/Navbar"
@@ -12,8 +11,8 @@ import {
   getSourceCodeOfContract,
   uploadToIpfs,
 } from "../../utils/api"
-import { turtleContract } from "../../utils/contracts"
-import { useAccount } from "wagmi"
+import { getTurtleTokenContract } from "../../utils/contracts"
+import { useAccount, useSigner } from "wagmi"
 import NoWallet from "../../components/dashboard/NoWallet"
 
 const PageState = {
@@ -25,9 +24,10 @@ export default function Dashboard() {
   const [pageState, setPageState] = useState(PageState.performAudit)
 
   const { address } = useAccount()
+  const { data: signer } = useSigner()
 
   const [selectedContract, setSelectedContract] = useState({
-    address: "0x4e8ebd8f1225a01335fcd851898df60555a36e17",
+    address: "0x081E56a6b25C2A42A91996e6Bb655641c101FD99",
     chain: 80001,
   })
   const [loading, setLoading] = useState(false)
@@ -119,7 +119,7 @@ export default function Dashboard() {
     }
   }
 
-  async function onMint(selectedContract, retryCount = 0) {
+  async function onMint(retryCount = 0) {
     if (!selectedContract || !score || !audits || !contractType) return
 
     try {
@@ -134,14 +134,14 @@ export default function Dashboard() {
         ),
         contractType,
       }
-      const ipfsCid = await uploadToIpfs(ipfsData)
+      const ipfsResult = await uploadToIpfs(ipfsData)
 
-      if (!ipfsCid.status !== 200) {
+      if (ipfsResult.status !== 201) {
         if (retryCount < 3) {
           console.log(
             `Failed to upload to IPFS, trying again retry count ${++retryCount}`
           )
-          onMint(selectedContract, ++retryCount)
+          onMint(++retryCount)
           return
         } else {
           throw new Error("Failed to upload to IPFS")
@@ -151,24 +151,34 @@ export default function Dashboard() {
       const signature = await getBackendSignature(
         selectedContract.chain,
         selectedContract.address,
-        ipfsCid,
-        score,
+        ipfsResult.data,
+        (score * 1e3).toString(),
         contractType
       )
 
-      if (!signature.status !== 200) {
+      if (signature.status !== 200) {
         if (retryCount < 3) {
           console.log(
             `Failed to retrieve signature, trying again retry count ${++retryCount}`
           )
-          onMint(selectedContract, ++retryCount)
+          onMint(++retryCount)
           return
         } else {
           throw new Error("Failed to retrieve signature")
         }
       }
 
-      const tx = turtleContract.mint(signature)
+      const turtleContract = getTurtleTokenContract(selectedContract.chain)
+      const mintData = {
+        to: selectedContract.address,
+        tokenURI: ipfsResult.data,
+        grade: (score * 1e3).toString(),
+        contractType,
+      }
+
+      console.log({ mintData })
+
+      const tx = turtleContract.connect(signer).mint(mintData, signature.data)
 
       await tx.wait()
     } catch (error) {
