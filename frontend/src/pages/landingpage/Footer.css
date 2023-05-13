@@ -7,15 +7,12 @@
     padding: fit-content;
     padding-top: 30px;
     gap: 100px;
-    margin: 2rem;
-    border-radius: 50px;
  
     color: white;
     background: #000000;
 }
 
 .h2{
-    font-family: 'Inter';
     font-style: normal;
     font-weight: 800;
     font-size: 20px;
@@ -23,10 +20,11 @@
 
     color: #C2C2C2;
 
+    margin-bottom: 15px;
+
 }
 
 .h3 {
-    font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -37,7 +35,6 @@
 
 
 .Socials{
-    font-family: 'Inter';
 font-style: normal;
 font-weight: 800;
 font-size: 20px;
@@ -53,4 +50,10 @@ height: 207px;
 left: 4px;
 top: 3px;
 
+}
+
+.footer_logo{
+    width: 50px;
+    height: 50px;
+    margin-bottom: 15px;
 }

@@ -1,12 +1,12 @@
 import React from 'react';
 import './Footer.css';
-import Footer_Logo from '../../assets/Footer_Logo.svg';
+import Footer_Logo from '../../assets/Logo_new.svg';
 
 const Footer = () => {
   return (
     <div className='Footer-Section'>
       <div className='Logo-Container'>
-        <img src={Footer_Logo} alt='logo' />
+        <img className="footer_logo" src={Footer_Logo} alt='logo' />
         <div className=''>
           <h3 className='h3'>Web3 Reimagined. Bridging security data on-chain.</h3>
         </div>
