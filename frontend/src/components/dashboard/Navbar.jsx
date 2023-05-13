@@ -2,7 +2,7 @@ import { FiHome } from "react-icons/fi"
 import { BiCheckShield } from "react-icons/bi"
 import { IoExit } from "react-icons/io5"
 import { Link } from "react-router-dom"
-import WhiteLogo from "../../assets/logo-white.svg"
+import WhiteLogo from "../../assets/Logo_new.svg"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
 
 export default function NavBar() {
