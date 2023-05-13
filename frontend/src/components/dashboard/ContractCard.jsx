@@ -1,11 +1,19 @@
 import classNames from "classNames"
-import { chainIdToExplorerUrl, chainIdToName } from "../utils/chainMapping"
+import { chainIdToExplorerUrl, chainIdToName } from "../../utils/chainMapping"
+import WhiteLogo from "../../assets/logo-white.svg"
+
+const CardType = {
+  onPerform: "onPerform",
+  onMint: "onMint",
+}
 
 export default function ContractCard({
   isSelected,
   setSelectedContract,
   contract,
 }) {
+  const [cardType, setCardType] = useState(CardType.onPerform)
+
   const chainName = chainIdToName[contract.chain?.toString()]
 
   const chainImageSrc =
@@ -21,6 +29,8 @@ export default function ContractCard({
   }
 
   const explorerUrl = chainIdToExplorerUrl[contract.address]
+
+  const timestamp = "TODO"
 
   return (
     <div
@@ -39,16 +49,32 @@ export default function ContractCard({
       }
     >
       <div className="mb-4 flex items-center font-bold text-xl">
-        <img
-          src={chainImageSrc}
-          alt={`${contract.chain} icon`}
-          width={48}
-          height={48}
-          className="ml-4"
-        />
-        <div className="ml-4">
-          {chainName && chainName?.[0]?.toUpperCase?.() + chainName?.slice?.(1)}
-        </div>
+        {cardType === CardType.onPerform ? (
+          <>
+            <img
+              src={chainImageSrc}
+              alt={`${contract.chain} icon`}
+              width={48}
+              height={48}
+              className="ml-4"
+            />
+            <div className="ml-4">
+              {chainName &&
+                chainName?.[0]?.toUpperCase?.() + chainName?.slice?.(1)}
+            </div>
+          </>
+        ) : (
+          <>
+            <img
+              src={WhiteLogo}
+              alt={`${contract.chain} icon`}
+              width={48}
+              height={48}
+              className="ml-4"
+            />
+            <div className="ml-4">Turtleshell Security Badge</div>
+          </>
+        )}
       </div>
 
       <div className="mb-4">
@@ -63,19 +89,37 @@ export default function ContractCard({
         </a>
       </div>
 
-      <div>
-        <div>date deployed</div>
-        {/* {new Date(contract.date).toLocaleString()} */}
-      </div>
+      {cardType === CardType.onPerform && (
+        <>
+          <div>
+            <div>date deployed</div>
+            {/* {new Date(contract.date).toLocaleString()} */}
+          </div>
 
-      <div className="flex justify-center mt-4 cursor-pointer">
-        <img
-          src={isSelected ? "/checkbox_checked.svg" : "/checkbox_unchecked.svg"}
-          alt="unchecked checkbox"
-          width={48}
-          height={48}
-        />
-      </div>
+          <div className="flex justify-center mt-4 cursor-pointer">
+            <img
+              src={
+                isSelected ? "/checkbox_checked.svg" : "/checkbox_unchecked.svg"
+              }
+              alt="unchecked checkbox"
+              width={48}
+              height={48}
+            />
+          </div>
+        </>
+      )}
+
+      {cardType === CardType.onMint && (
+        <>
+          <div>
+            <div>chain</div>
+          </div>
+
+          <div className="flex justify-center mt-4 cursor-pointer">
+            {chainName}
+          </div>
+        </>
+      )}
     </div>
   )
 }
