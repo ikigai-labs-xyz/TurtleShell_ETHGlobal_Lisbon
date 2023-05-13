@@ -13,6 +13,7 @@ import {
 } from "../../utils/api"
 import { turtleContract } from "../../utils/contracts"
 import MintNft from "../../components/dashboard/MintNft"
+import { CardType } from "../../components/dashboard/ContractCard"
 
 const PageState = {
   performAudit: "performAudit",
@@ -160,6 +161,7 @@ export default function Dashboard() {
             selectedContract={selectedContract}
             performAudit={performAudit}
             loading={loading}
+			cardType={CardType.onPerform}
           />
         )
         break
@@ -170,6 +172,7 @@ export default function Dashboard() {
             contract={selectedContract}
             loading={loading}
             mintNft={onMint}
+			cardType={CardType.onMint}
           />
         )
     }

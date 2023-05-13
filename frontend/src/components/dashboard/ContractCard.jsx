@@ -1,9 +1,8 @@
 import classNames from "classNames"
-import { useState } from "react"
-import WhiteLogo from "../../assets/logo-white.svg"
+import Logo from "../../assets/logo.svg"
 import { chainIdToExplorerUrl, chainIdToName } from "../../utils/chainMapping"
 
-const CardType = {
+export const CardType = {
   onPerform: "onPerform",
   onMint: "onMint",
 }
@@ -12,9 +11,8 @@ export default function ContractCard({
   isSelected,
   setSelectedContract,
   contract,
+  cardType,
 }) {
-  const [cardType, setCardType] = useState(CardType.onPerform)
-
   const chainName = chainIdToName[contract.chain?.toString()]
 
   const chainImageSrc =
@@ -67,7 +65,7 @@ export default function ContractCard({
         ) : (
           <>
             <img
-              src={WhiteLogo}
+              src={Logo}
               alt={`${contract.chain} icon`}
               width={48}
               height={48}
