@@ -1,8 +1,12 @@
 import { useState } from "react"
+import Confetti from "react-confetti"
+import { useAccount, useSigner } from "wagmi"
 import MintNft from "../../components/dashboard/MintNft"
 import NavBar from "../../components/dashboard/Navbar"
+import NoWallet from "../../components/dashboard/NoWallet"
 import PerformAudit from "../../components/dashboard/PerformAudit"
 import useGetContracts from "../../hooks/useGetContractsOfWalletAddress"
+import useWindowSize from "../../hooks/useWindowSize"
 import {
   getAuditsOfContract,
   getBackendSignature,
@@ -12,29 +16,32 @@ import {
   uploadToIpfs,
 } from "../../utils/api"
 import { getTurtleTokenContract } from "../../utils/contracts"
-import { useAccount, useSigner } from "wagmi"
-import NoWallet from "../../components/dashboard/NoWallet"
+import MintSuccess from "../../components/dashboard/MintSuccess"
 
 const PageState = {
   performAudit: "performAudit",
   mintNft: "mintNft",
+  mintSuccess: "mintSuccess",
 }
 
 export default function Dashboard() {
   const [pageState, setPageState] = useState(PageState.performAudit)
 
+  const { width, height } = useWindowSize()
   const { address } = useAccount()
   const { data: signer } = useSigner()
 
   const [selectedContract, setSelectedContract] = useState({
-    address: "0x081E56a6b25C2A42A91996e6Bb655641c101FD99",
-    chain: 80001,
+    address: "",
+    chain: 0,
   })
+
   const [loading, setLoading] = useState(false)
   const [audits, setAudits] = useState("")
   const [score, setScore] = useState("")
   const [contractType, setContractType] = useState("")
   const [error, setError] = useState("")
+  const [success, setSuccess] = useState({ show: false, hash: "" })
 
   const {
     loading: getContractsLoading,
@@ -47,6 +54,7 @@ export default function Dashboard() {
 
     try {
       setError("")
+      setSuccess({ show: false, hash: "" })
       setLoading(true)
 
       const sourceCode = await getSourceCodeOfContract(
@@ -176,11 +184,17 @@ export default function Dashboard() {
         contractType,
       }
 
-      console.log({ mintData, signature: signature.data })
+      const tx = turtleContract.connect(signer).mint(mintData, signature.data)
 
-      const tx = await turtleContract.connect(signer).mint(mintData, signature.data)
+      const hash = tx.hash
 
-      // await tx.wait()
+      await tx.wait()
+
+      setSuccess({ show: true, hash })
+      setPageState(PageState.mintSuccess)
+      setTimeout(() => {
+        setSuccess({ show: false, hash })
+      }, 5000)
     } catch (error) {
       console.error(`onMint error: ${error.message}`)
     } finally {
@@ -221,6 +235,13 @@ export default function Dashboard() {
             mintNft={onMint}
           />
         )
+        break
+
+      case PageState.mintSuccess:
+        content = (
+          <MintSuccess hash={success.hash} contract={selectedContract} />
+        )
+        break
     }
 
     return content
@@ -233,6 +254,8 @@ export default function Dashboard() {
         {error && <div className="text-red-500 text-xl">{error}</div>}
 
         {renderContent()}
+
+        {success.show && <Confetti width={width} height={height} />}
       </main>
     </div>
   )
