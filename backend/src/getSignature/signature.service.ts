@@ -16,7 +16,7 @@ export class SignatureService {
     );
   }
   public async composeSignature(params: {
-    chainId: string | undefined;
+    chainId: number | undefined;
     contractAddress: string | undefined;
     ipfsHash: string | undefined;
     grade: string | undefined;
@@ -54,7 +54,7 @@ export class SignatureService {
           MintRequest: [
             { name: 'to', type: 'address' },
             { name: 'tokenURI', type: 'string' },
-            { name: 'grade', type: 'string' },
+            { name: 'grade', type: 'uint256' },
             { name: 'contractType', type: 'bytes32' },
           ],
         },
