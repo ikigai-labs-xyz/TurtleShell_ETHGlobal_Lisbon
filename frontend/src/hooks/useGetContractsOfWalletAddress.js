@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 
 export default function useGetContracts(walletAddress) {
   const [loading, setLoading] = useState(false)
+  const [loaded, setLoaded] = useState(false)
 
   const [contracts, setContracts] = useState([])
 
@@ -26,33 +27,18 @@ export default function useGetContracts(walletAddress) {
         }
 
         setContracts(contracts.data)
-        // setContracts([
-        //   {
-        //     address: ethers.constants.AddressZero,
-        //     chain: "mainnet",
-        //     date: new Date().toString(),
-        //   },
-        //   {
-        //     address: ethers.constants.AddressZero + "1",
-        //     chain: "avalanche",
-        //     date: new Date().toString(),
-        //   },
-        //   {
-        //     address: ethers.constants.AddressZero + "2",
-        //     chain: "polygon",
-        //     date: new Date().toString(),
-        //   },
-        // ])
       } catch (error) {
         console.error(`getContractsOfAddress error: ${error.message}`)
       } finally {
         setLoading(false)
+        setLoaded(true)
       }
     })()
   }, [contracts, walletAddress])
 
   return {
     loading,
+    loaded,
     contracts,
   }
 }

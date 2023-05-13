@@ -8,7 +8,10 @@ export default function PerformAudit({
   selectedContract,
   performAudit,
   loading,
+  loaded,
 }) {
+  console.log({ loaded })
+
   return (
     <>
       <div className="w-full items-center justify-between mb-4">
@@ -19,6 +22,12 @@ export default function PerformAudit({
 
       <div className="mb-4 flex flex-wrap justify-center text-sm">
         {getContractsLoading && <Spinner />}
+
+        {loaded && contracts && contracts.length === 0 && (
+          <div className="text-[#8594AB] text-xl">
+            No contracts from this wallet address found on this chain.
+          </div>
+        )}
 
         {contracts.map((contract) => {
           const isSelected =

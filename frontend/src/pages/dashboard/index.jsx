@@ -36,7 +36,11 @@ export default function Dashboard() {
   const [contractType, setContractType] = useState("")
   const [error, setError] = useState("")
 
-  const { loading: getContractsLoading, contracts } = useGetContracts(address)
+  const {
+    loading: getContractsLoading,
+    loaded: getContractsLoaded,
+    contracts,
+  } = useGetContracts(address)
 
   async function performAudit(selectedContract, retryCount = 0) {
     if (!selectedContract) return
@@ -49,7 +53,6 @@ export default function Dashboard() {
         selectedContract.address,
         selectedContract.chain
       )
-      console.log("sourceCode", sourceCode)
 
       if (
         sourceCode.data &&
@@ -190,6 +193,7 @@ export default function Dashboard() {
             selectedContract={selectedContract}
             performAudit={performAudit}
             loading={loading}
+            loaded={getContractsLoaded}
           />
         )
         break
