@@ -178,9 +178,9 @@ export default function Dashboard() {
 
       console.log({ mintData, signature: signature.data })
 
-      const tx = turtleContract.connect(signer).mint(mintData, signature.data)
+      const tx = await turtleContract.connect(signer).mint(mintData, signature.data)
 
-      await tx.wait()
+      // await tx.wait()
     } catch (error) {
       console.error(`onMint error: ${error.message}`)
     } finally {
