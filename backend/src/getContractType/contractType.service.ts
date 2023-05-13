@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { ethers } from 'ethers';
 import config from 'src/config';
 
 interface SourceCode {
@@ -8,25 +9,29 @@ interface SourceCode {
 }
 
 interface Params {
-  sourceCode: string[] | undefined;
+  sources: string[] | undefined;
 }
 
-const sourceCodes: SourceCode[] = [{ rawCode: 'sourceCodeHere', typeName: '' }];
+const sourceCodes: SourceCode[] = [{ rawCode: '', typeName: 'flash-loan' }];
 
 @Injectable()
 export class ContractTypeService {
   constructor(private contractTypeService: HttpService) {}
   public getContractType(params: Params): string {
-    if (!params.sourceCode) {
+    if (!params.sources) {
       throw new BadRequestException('Missing params');
     }
 
     for (const sourceCode of sourceCodes) {
-      if (params.sourceCode.includes(sourceCode.rawCode)) {
-        return sourceCode.typeName;
+      for (const source of params.sources) {
+        if (source.includes(sourceCode.rawCode)) {
+          return ethers.utils.keccak256(
+            ethers.utils.toUtf8Bytes(sourceCode.typeName),
+          );
+        }
       }
     }
 
-    return 'unknown';
+    return ethers.utils.keccak256(ethers.utils.toUtf8Bytes('unknown'));
   }
 }

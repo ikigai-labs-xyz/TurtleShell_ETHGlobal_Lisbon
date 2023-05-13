@@ -8,4 +8,4 @@ import { ContractTypeService } from './contractType.service';
   providers: [ContractTypeService],
   imports: [HttpModule],
 })
-export class SourceCodeModule {}
+export class ContractTypeModule {}

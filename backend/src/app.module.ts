@@ -6,6 +6,7 @@ import { UploadToIpfsModule } from './uploadToIpfs/uploadToIpfs.module';
 import { AuditModule } from './getAuditData/audit.module';
 import { ScoreModule } from './getScore/score.module';
 import { ContractsModule } from './getContractsOf/contracts.module';
+import { ContractTypeModule } from './getContractType/contractType.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ContractsModule } from './getContractsOf/contracts.module';
     AuditModule,
     ScoreModule,
     ContractsModule,
+    ContractTypeModule,
   ],
 })
 export class AppModule {}
