@@ -62,24 +62,21 @@ export default function Dashboard() {
         setError("No audits found. This contract might not have been verified.")
       }
 
-      if (!sourceCode) {
+      if (sourceCode.status !== 200) {
         if (retryCount < 3) {
           console.log(
-            `Failed to retrieve audits or score, trying again retry count ${++retryCount}`
+            `Failed to retrieve source code, trying again retry count ${++retryCount}`
           )
           performAudit(selectedContract, ++retryCount)
+          return
         } else {
-          throw new Error("Failed to retrieve audits or score")
+          throw new Error("Failed to retrieve source code")
         }
       }
 
       const [audits, contractType] = await Promise.all([
         getAuditsOfContract(sourceCode.data),
-<<<<<<< HEAD
         // getContractType(sourceCode.data),
-=======
-        getContractType(sourceCode.data),
->>>>>>> f8d4ba0 (WIP user flow)
       ])
 
       // if (audits.status !== 201 || contractType.status !== 201) {
@@ -104,20 +101,16 @@ export default function Dashboard() {
             `Failed to retrieve score, trying again retry count ${++retryCount}`
           )
           performAudit(selectedContract, ++retryCount)
+          return
         } else {
           throw new Error("Failed to retrieve score")
         }
       }
 
       setAudits(audits.data)
-<<<<<<< HEAD
       setContractType("")
       // setContractType(contractType.data)
       setScore(+score.data / 1e3)
-=======
-      setContractType(contractType.data)
-      setScore(score.data)
->>>>>>> f8d4ba0 (WIP user flow)
 
       setPageState(PageState.mintNft)
     } catch (error) {
@@ -150,6 +143,7 @@ export default function Dashboard() {
             `Failed to upload to IPFS, trying again retry count ${++retryCount}`
           )
           onMint(selectedContract, ++retryCount)
+          return
         } else {
           throw new Error("Failed to upload to IPFS")
         }
@@ -169,6 +163,7 @@ export default function Dashboard() {
             `Failed to retrieve signature, trying again retry count ${++retryCount}`
           )
           onMint(selectedContract, ++retryCount)
+          return
         } else {
           throw new Error("Failed to retrieve signature")
         }
