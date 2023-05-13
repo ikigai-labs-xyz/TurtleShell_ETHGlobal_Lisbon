@@ -10,7 +10,7 @@ export default function NavBar() {
 			<div className="h-[95%] w-[8rem] mx-auto bg-bar-bg rounded-30 flex items-center">
 				<div className="flex flex-col justify-between h-[95%] w-[50%] mx-auto">
 					<div className="w-[80%] flex mx-auto">
-						<img src={WhiteLogo} alt="Turtleshell" />
+						<img src={WhiteLogo} alt="Turtleshell" height={60} width={60} />
 					</div>
 					<div className="flex flex-col items-center justify-center gap-20">
 						<Link
@@ -46,37 +46,3 @@ export default function NavBar() {
 		</div>
 	)
 }
-
-// ;<div className="w-[10rem] h-screen flex items-center">
-// 	<div className="h-[95%] w-[8rem] mx-auto bg-bar-bg rounded-30">
-// 		<div className="flex flex-col space-between my-[2rem] w-[50%] mx-auto">
-// 			{/* logo */}
-// 			<div>
-// 				<img src={WhiteLogo} alt="Turtleshell" />
-// 			</div>
-// 			{/* home, my badges */}
-// 			<div className="flex flex-col w-full gap-20 items-center justify-center">
-// 				<Link to="/ai-app" className="flex mx-auto w-full flex-col gap-2 items-center justify-center">
-// 					<FiHome className="text-secondary-grey" size="34" />
-// 					<span className="text-secondary-grey font-semibold text-[16px]">Home</span>
-// 				</Link>
-// 				<Link
-// 					to="/ai-app/my-badges"
-// 					className="flex mx-auto w-full flex-col gap-2 items-center justify-center"
-// 				>
-// 					<BiCheckShield className="text-secondary-grey" size="36" />
-// 					<span className="text-secondary-grey font-semibold text-center text-[16px]">
-// 						My Badges
-// 					</span>
-// 				</Link>
-// 			</div>
-// 			<div>
-// 				{/* exit */}
-// 				<Link to="/ai-app" className="flex mx-auto w-full flex-col gap-2 items-center justify-center">
-// 					<IoExit className="text-secondary-grey" size="34" />
-// 					<span className="text-secondary-grey font-semibold text-[16px]">Exit</span>
-// 				</Link>
-// 			</div>
-// 		</div>
-// 	</div>
-// </div>
