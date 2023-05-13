@@ -5,46 +5,50 @@ import { Link } from "react-router-dom"
 import WhiteLogo from "../../assets/logo-white.svg"
 
 export default function NavBar() {
-	return (
-		<div className="w-[10rem] h-screen flex items-center">
-			<div className="h-[95%] w-[8rem] mx-auto bg-bar-bg rounded-30 flex items-center">
-				<div className="flex flex-col justify-between h-[95%] w-[50%] mx-auto">
-					<div className="w-[80%] flex mx-auto">
-						<img src={WhiteLogo} alt="Turtleshell" />
-					</div>
-					<div className="flex flex-col items-center justify-center gap-20">
-						<Link
-							to="/ai-app"
-							className="flex mx-auto w-full flex-col gap-2 items-center justify-center"
-						>
-							<FiHome className="text-secondary-grey" size="34" />
-							<span className="text-secondary-grey font-semibold text-[16px]">Home</span>
-						</Link>
-						<Link
-							to="/ai-app/my-badges"
-							className="flex mx-auto w-full flex-col gap-2 items-center justify-center"
-						>
-							<BiCheckShield className="text-secondary-grey" size="36" />
-							<span className="text-secondary-grey font-semibold text-center text-[16px]">
-								My Badges
-							</span>
-						</Link>
-						{/* for more spacing */}
-						<div></div>
-					</div>
-					<div className="flex justify-center">
-						<Link
-							to="/"
-							className="flex mx-auto w-full flex-col gap-2 items-center justify-center"
-						>
-							<IoExit className="text-secondary-grey" size="34" />
-							<span className="text-secondary-grey font-semibold text-[16px]">Exit</span>
-						</Link>
-					</div>
-				</div>
-			</div>
-		</div>
-	)
+  return (
+    <div className="w-[10rem] h-screen flex items-center">
+      <div className="h-[95%] w-[8rem] mx-auto bg-bar-bg rounded-30 flex items-center">
+        <div className="flex flex-col justify-between h-[95%] w-[50%] mx-auto">
+          <div className="w-[80%] flex mx-auto">
+            <img src={WhiteLogo} alt="Turtleshell" height={60} width={60} />
+          </div>
+          <div className="flex flex-col items-center justify-center gap-20">
+            <Link
+              to="/dashboard"
+              className="flex mx-auto w-full flex-col gap-2 items-center justify-center"
+            >
+              <FiHome className="text-secondary-grey" size="34" />
+              <span className="text-secondary-grey font-semibold text-[16px]">
+                Home
+              </span>
+            </Link>
+            <Link
+              to="/dashboard/my-badges"
+              className="flex mx-auto w-full flex-col gap-2 items-center justify-center"
+            >
+              <BiCheckShield className="text-secondary-grey" size="36" />
+              <span className="text-secondary-grey font-semibold text-center text-[16px]">
+                My Badges
+              </span>
+            </Link>
+            {/* for more spacing */}
+            <div></div>
+          </div>
+          <div className="flex justify-center">
+            <Link
+              to="/"
+              className="flex mx-auto w-full flex-col gap-2 items-center justify-center"
+            >
+              <IoExit className="text-secondary-grey" size="34" />
+              <span className="text-secondary-grey font-semibold text-[16px]">
+                Exit
+              </span>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 // ;<div className="w-[10rem] h-screen flex items-center">
@@ -56,12 +60,12 @@ export default function NavBar() {
 // 			</div>
 // 			{/* home, my badges */}
 // 			<div className="flex flex-col w-full gap-20 items-center justify-center">
-// 				<Link to="/ai-app" className="flex mx-auto w-full flex-col gap-2 items-center justify-center">
+// 				<Link to="/dashboard" className="flex mx-auto w-full flex-col gap-2 items-center justify-center">
 // 					<FiHome className="text-secondary-grey" size="34" />
 // 					<span className="text-secondary-grey font-semibold text-[16px]">Home</span>
 // 				</Link>
 // 				<Link
-// 					to="/ai-app/my-badges"
+// 					to="/dashboard/my-badges"
 // 					className="flex mx-auto w-full flex-col gap-2 items-center justify-center"
 // 				>
 // 					<BiCheckShield className="text-secondary-grey" size="36" />
@@ -72,7 +76,7 @@ export default function NavBar() {
 // 			</div>
 // 			<div>
 // 				{/* exit */}
-// 				<Link to="/ai-app" className="flex mx-auto w-full flex-col gap-2 items-center justify-center">
+// 				<Link to="/dashboard" className="flex mx-auto w-full flex-col gap-2 items-center justify-center">
 // 					<IoExit className="text-secondary-grey" size="34" />
 // 					<span className="text-secondary-grey font-semibold text-[16px]">Exit</span>
 // 				</Link>
