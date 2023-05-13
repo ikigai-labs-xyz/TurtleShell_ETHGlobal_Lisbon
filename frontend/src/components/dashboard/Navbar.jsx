@@ -3,10 +3,15 @@ import { BiCheckShield } from "react-icons/bi"
 import { IoExit } from "react-icons/io5"
 import { Link } from "react-router-dom"
 import WhiteLogo from "../../assets/logo-white.svg"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
 
 export default function NavBar() {
 	return (
-		<div className="w-[10rem] h-screen flex items-center">
+		<>
+		<div className="fixed top-0 right-0 p-4 text-white">
+			<ConnectButton/>
+		</div>
+		<div className="fixed w-[10rem] h-screen flex items-center">
 			<div className="h-[95%] w-[8rem] mx-auto bg-bar-bg rounded-30 flex items-center">
 				<div className="flex flex-col justify-between h-[95%] w-[50%] mx-auto">
 					<div className="w-[80%] flex mx-auto">
@@ -44,5 +49,6 @@ export default function NavBar() {
 				</div>
 			</div>
 		</div>
+		</>
 	)
 }

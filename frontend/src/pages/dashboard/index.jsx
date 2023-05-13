@@ -14,6 +14,7 @@ import {
 import { turtleContract } from "../../utils/contracts"
 import MintNft from "../../components/dashboard/MintNft"
 import { CardType } from "../../components/dashboard/ContractCard"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
 
 const PageState = {
   performAudit: "performAudit",
@@ -181,10 +182,9 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="h-screen w-screen bg-app-bg">
+    <div className="h-screen w-screen">
       <NavBar />
-
-      <main className="bg-[#0B0C15] flex min-h-screen flex-col items-center justify-between p-24">
+      <main className=" flex min-h-screen flex-col items-center justify-between p-24">
         {renderContent()}
       </main>
     </div>
