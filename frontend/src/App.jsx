@@ -6,7 +6,12 @@ import {
 import "@rainbow-me/rainbowkit/styles.css"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { WagmiConfig, configureChains, createClient } from "wagmi"
-import { optimismGoerli, polygonMumbai } from "wagmi/chains"
+import {
+  filecoinHyperspace,
+  optimismGoerli,
+  polygonMumbai,
+  polygonZkEvmTestnet,
+} from "wagmi/chains"
 import { alchemyProvider } from "wagmi/providers/alchemy"
 import { publicProvider } from "wagmi/providers/public"
 import Dashboard from "./pages/dashboard"
@@ -33,7 +38,13 @@ const linea = {
 
 function App() {
   const { chains, provider } = configureChains(
-    [polygonMumbai, optimismGoerli, linea],
+    [
+      polygonMumbai,
+      optimismGoerli,
+      linea,
+      polygonZkEvmTestnet,
+      filecoinHyperspace,
+    ],
     [
       alchemyProvider({ apiKey: import.meta.env.ALCHEMY_API_KEY }),
       publicProvider(),
