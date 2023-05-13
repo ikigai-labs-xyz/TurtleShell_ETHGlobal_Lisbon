@@ -12,6 +12,7 @@ import {
   uploadToIpfs,
 } from "../../utils/api"
 import { turtleContract } from "../../utils/contracts"
+import MintNft from "../../dashboard/MintNft"
 
 const PageState = {
   performAudit: "performAudit",
@@ -19,7 +20,7 @@ const PageState = {
 }
 
 export default function Dashboard() {
-  const [pageState, setPageState] = useState(PageState.performAudit)
+  const [pageState, setPageState] = useState(PageState.mintNft)
 
   const [selectedContract, setSelectedContract] = useState({
     address: ethers.constants.AddressZero,
@@ -140,18 +141,7 @@ export default function Dashboard() {
         break
 
       case PageState.mintNft:
-        content = (
-          <>
-            <div className="w-full items-center justify-between mb-4">
-              <h2 className="flex w-full justify-center text-center font-bold leading-[3rem] text-[#DBDBDB] text-4xl">
-                Congrats! 🎉
-              </h2>
-
-              <div>The AI model has scanned your contract.</div>
-              <div>Mint your security badge now.</div>
-            </div>
-          </>
-        )
+        content = <MintNft />
     }
 
     return content
