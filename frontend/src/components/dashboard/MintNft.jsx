@@ -1,7 +1,7 @@
-import ContractCard from "./ContractCard"
+import ContractCard, { CardType } from "./ContractCard"
 import Spinner from "../Spinner"
 
-export default function MintNft({ contract, loading, mintNft }) {
+export default function MintNft({ contract, loading, mintNft, score }) {
   return (
     <>
       <div className="w-full items-center justify-between mb-4">
@@ -20,6 +20,8 @@ export default function MintNft({ contract, loading, mintNft }) {
           isSelected={true}
           setSelectedContract={null}
           contract={contract}
+          cardType={CardType.onMint}
+          grade={score}
         />
       </div>
 

@@ -1,5 +1,6 @@
 import { ethers } from "ethers"
 import { useState } from "react"
+import MintNft from "../../components/dashboard/MintNft"
 import NavBar from "../../components/dashboard/Navbar"
 import PerformAudit from "../../components/dashboard/PerformAudit"
 import useGetContracts from "../../hooks/useGetContractsOfWalletAddress"
@@ -12,9 +13,6 @@ import {
   uploadToIpfs,
 } from "../../utils/api"
 import { turtleContract } from "../../utils/contracts"
-import MintNft from "../../components/dashboard/MintNft"
-import { CardType } from "../../components/dashboard/ContractCard"
-import { ConnectButton } from "@rainbow-me/rainbowkit"
 
 const PageState = {
   performAudit: "performAudit",
@@ -84,6 +82,10 @@ export default function Dashboard() {
           throw new Error("Failed to retrieve audits or score")
         }
       }
+
+      setAudits(audits)
+      setContractType(contractType)
+      setScore(score)
 
       setPageState(PageState.mintNft)
     } catch (error) {
@@ -162,7 +164,6 @@ export default function Dashboard() {
             selectedContract={selectedContract}
             performAudit={performAudit}
             loading={loading}
-			cardType={CardType.onPerform}
           />
         )
         break
@@ -172,8 +173,8 @@ export default function Dashboard() {
           <MintNft
             contract={selectedContract}
             loading={loading}
+            score={score}
             mintNft={onMint}
-			cardType={CardType.onMint}
           />
         )
     }
