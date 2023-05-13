@@ -20,7 +20,7 @@ const PageState = {
 }
 
 export default function Dashboard() {
-  const [pageState, setPageState] = useState(PageState.mintNft)
+  const [pageState, setPageState] = useState(PageState.performAudit)
 
   const [selectedContract, setSelectedContract] = useState({
     address: ethers.constants.AddressZero,

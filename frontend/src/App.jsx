@@ -3,7 +3,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import "@rainbow-me/rainbowkit/styles.css"
 import { darkTheme, getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit"
 import { configureChains, createClient, WagmiConfig } from "wagmi"
-import { goerli } from "wagmi/chains"
+import { polygonMumbai } from "wagmi/chains"
 import { alchemyProvider } from "wagmi/providers/alchemy"
 import { publicProvider } from "wagmi/providers/public"
 
@@ -12,7 +12,7 @@ import Dashboard from "./pages/dashboard"
 
 function App() {
 	const { chains, provider } = configureChains(
-		[goerli],
+		[polygonMumbai],
 		[alchemyProvider({ apiKey: import.meta.env.ALCHEMY_API_KEY }), publicProvider()]
 	)
 
