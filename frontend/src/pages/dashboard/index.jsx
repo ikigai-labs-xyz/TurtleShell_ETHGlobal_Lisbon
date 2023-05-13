@@ -76,26 +76,26 @@ export default function Dashboard() {
 
       const [audits, contractType] = await Promise.all([
         getAuditsOfContract(sourceCode.data),
-        // getContractType(sourceCode.data),
+        getContractType(sourceCode.data),
       ])
 
-      // if (audits.status !== 201 || contractType.status !== 201) {
-      //   if (retryCount < 3) {
-      //     console.log(
-      //       `Failed to retrieve audits or contract type, trying again retry count ${++retryCount}`
-      //     )
-      //     performAudit(selectedContract, ++retryCount)
-      //     return
-      //   } else {
-      //     throw new Error("Failed to retrieve audits or contract type")
-      //   }
-      // }
+      if (audits.status !== 201 || contractType.status !== 201) {
+        if (retryCount < 3) {
+          console.log(
+            `Failed to retrieve audits or contract type, trying again retry count ${++retryCount}`
+          )
+          performAudit(selectedContract, ++retryCount)
+          return
+        } else {
+          throw new Error("Failed to retrieve audits or contract type")
+        }
+      }
 
-      const score = getScoreOfContract(
+      const score = await getScoreOfContract(
         audits.data?.map((auditData) => auditData.vulnerabilityType)
       )
 
-      if (!score.status !== 201) {
+      if (score.status !== 201) {
         if (retryCount < 3) {
           console.log(
             `Failed to retrieve score, trying again retry count ${++retryCount}`
@@ -108,8 +108,7 @@ export default function Dashboard() {
       }
 
       setAudits(audits.data)
-      setContractType("")
-      // setContractType(contractType.data)
+      setContractType(contractType.data)
       setScore(+score.data / 1e3)
 
       setPageState(PageState.mintNft)
