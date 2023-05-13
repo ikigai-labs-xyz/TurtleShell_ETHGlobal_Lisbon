@@ -27,8 +27,8 @@ export default function Dashboard() {
   const { address } = useAccount()
 
   const [selectedContract, setSelectedContract] = useState({
-    address: ethers.constants.AddressZero,
-    chain: 5,
+    address: "0x4e8ebd8f1225a01335fcd851898df60555a36e17",
+    chain: 80001,
   })
   const [loading, setLoading] = useState(false)
   const [audits, setAudits] = useState("")
@@ -75,7 +75,11 @@ export default function Dashboard() {
 
       const [audits, contractType] = await Promise.all([
         getAuditsOfContract(sourceCode.data),
+<<<<<<< HEAD
         // getContractType(sourceCode.data),
+=======
+        getContractType(sourceCode.data),
+>>>>>>> f8d4ba0 (WIP user flow)
       ])
 
       // if (audits.status !== 201 || contractType.status !== 201) {
@@ -106,9 +110,14 @@ export default function Dashboard() {
       }
 
       setAudits(audits.data)
+<<<<<<< HEAD
       setContractType("")
       // setContractType(contractType.data)
       setScore(+score.data / 1e3)
+=======
+      setContractType(contractType.data)
+      setScore(score.data)
+>>>>>>> f8d4ba0 (WIP user flow)
 
       setPageState(PageState.mintNft)
     } catch (error) {

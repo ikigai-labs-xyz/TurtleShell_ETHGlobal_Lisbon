@@ -1,18 +1,16 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom"
-
+import { RainbowKitProvider, darkTheme, getDefaultWallets } from "@rainbow-me/rainbowkit"
 import "@rainbow-me/rainbowkit/styles.css"
-import { darkTheme, getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit"
-import { configureChains, createClient, WagmiConfig } from "wagmi"
-import { polygonMumbai } from "wagmi/chains"
+import { RouterProvider, createBrowserRouter } from "react-router-dom"
+import { WagmiConfig, configureChains, createClient } from "wagmi"
+import { optimismGoerli, polygonMumbai } from "wagmi/chains"
 import { alchemyProvider } from "wagmi/providers/alchemy"
 import { publicProvider } from "wagmi/providers/public"
-
-import Landingpage from "./pages/landingpage"
 import Dashboard from "./pages/dashboard"
+import Landingpage from "./pages/landingpage"
 
 function App() {
 	const { chains, provider } = configureChains(
-		[polygonMumbai],
+		[polygonMumbai, optimismGoerli],
 		[alchemyProvider({ apiKey: import.meta.env.ALCHEMY_API_KEY }), publicProvider()]
 	)
 

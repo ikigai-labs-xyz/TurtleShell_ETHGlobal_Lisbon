@@ -10,8 +10,6 @@ export default function PerformAudit({
   loading,
   loaded,
 }) {
-  console.log({ loaded })
-
   return (
     <>
       <div className="w-full items-center justify-between mb-4">
