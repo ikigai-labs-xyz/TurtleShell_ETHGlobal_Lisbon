@@ -47,45 +47,41 @@ export default function Dashboard() {
       )
 
       const [audits, contractType] = await Promise.all([
-        getAuditsOfContract(sourceCode),
-        getContractType(sourceCode),
+        getAuditsOfContract(sourceCode.data),
+        // getContractType(sourceCode.data),
       ])
 
-      if (
-        !audits ||
-        typeof audits !== "string" ||
-        !contractType ||
-        typeof contractType !== "string"
-      ) {
-        if (retryCount < 3) {
-          console.log(
-            `Failed to retrieve audits or score, trying again retry count ${++retryCount}`
-          )
-          performAudit(selectedContract, ++retryCount)
-        } else {
-          throw new Error("Failed to retrieve audits or score")
-        }
-      }
+      // if (audits.status !== 201 || contractType.status !== 201) {
+      //   if (retryCount < 3) {
+      //     console.log(
+      //       `Failed to retrieve audits or contract type, trying again retry count ${++retryCount}`
+      //     )
+      //     performAudit(selectedContract, ++retryCount)
+      //     return
+      //   } else {
+      //     throw new Error("Failed to retrieve audits or contract type")
+      //   }
+      // }
 
       const score = getScoreOfContract(
-        selectedContract,
-        audits?.map((auditData) => auditData.vulnerabilityType)
+        audits.data?.map((auditData) => auditData.vulnerabilityType)
       )
 
-      if (!score || typeof score !== "string") {
+      if (!score.status !== 201) {
         if (retryCount < 3) {
           console.log(
-            `Failed to retrieve audits or score, trying again retry count ${++retryCount}`
+            `Failed to retrieve score, trying again retry count ${++retryCount}`
           )
           performAudit(selectedContract, ++retryCount)
         } else {
-          throw new Error("Failed to retrieve audits or score")
+          throw new Error("Failed to retrieve score")
         }
       }
 
-      setAudits(audits)
-      setContractType(contractType)
-      setScore(score)
+      setAudits(audits.data)
+      setContractType("")
+      // setContractType(contractType.data)
+      setScore(+score.data / 1e3)
 
       setPageState(PageState.mintNft)
     } catch (error) {
