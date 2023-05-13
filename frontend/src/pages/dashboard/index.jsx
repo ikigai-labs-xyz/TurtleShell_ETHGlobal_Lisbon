@@ -1,7 +1,7 @@
 import { ethers } from "ethers"
 import { useState } from "react"
 import NavBar from "../../components/dashboard/Navbar"
-import PerformAudit from "../../dashboard/PerformAudit"
+import PerformAudit from "../../components/dashboard/PerformAudit"
 import useGetContracts from "../../hooks/useGetContractsOfWalletAddress"
 import {
   getAuditsOfContract,
@@ -12,7 +12,7 @@ import {
   uploadToIpfs,
 } from "../../utils/api"
 import { turtleContract } from "../../utils/contracts"
-import MintNft from "../../dashboard/MintNft"
+import MintNft from "../../components/dashboard/MintNft"
 
 const PageState = {
   performAudit: "performAudit",

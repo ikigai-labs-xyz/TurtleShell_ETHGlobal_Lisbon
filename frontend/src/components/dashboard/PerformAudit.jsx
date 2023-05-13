@@ -1,5 +1,5 @@
-import Spinner from "../components/Spinner"
-import ContractCard from "../components/dashboard/ContractCard"
+import Spinner from "../Spinner"
+import ContractCard from "./ContractCard"
 
 export default function PerformAudit({
   getContractsLoading,

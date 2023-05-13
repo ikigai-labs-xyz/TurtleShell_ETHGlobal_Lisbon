@@ -1,5 +1,5 @@
-import ContractCard from "../components/dashboard/ContractCard"
-import Spinner from "../components/Spinner"
+import ContractCard from "./ContractCard"
+import Spinner from "../Spinner"
 
 export default function MintNft({ contract, loading, mintNft }) {
   return (
