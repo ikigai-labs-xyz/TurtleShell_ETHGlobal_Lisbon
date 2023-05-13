@@ -8,13 +8,19 @@ require("solidity-coverage")
 require("hardhat-deploy")
 require("@primitivefi/hardhat-dodoc")
 
-const GOERLI_RPC_URL = process.env.RPC_URL !== undefined ? process.env.RPC_URL.replace("network", "goerli") : ""
-const GOERLI_RPIVATE_KEY = process.env.GOERLI_PRIVATE_KEY !== undefined ? process.env.GOERLI_PRIVATE_KEY : ""
-const GOERLI_EXPLORER_API_KEY = process.env.GOERLI_EXPLORER_API_KEY
-
 const MUMBAI_RPC_URL = process.env.RPC_URL !== undefined ? process.env.RPC_URL.replace("network", "polygon-mumbai") : ""
 const MUMBAI_PRIVATE_KEY = process.env.MUMBAI_PRIVATE_KEY !== undefined ? process.env.MUMBAI_PRIVATE_KEY : ""
 const MUMBAI_EXPLORER_API_KEY = process.env.MUMBAI_EXPLORER_API_KEY
+
+const OPTIMISM_GOERLI_RPC_URL =
+	process.env.RPC_URL !== undefined ? process.env.RPC_URL.replace("network", "opt-goerli") : ""
+const OPTIMISM_GOERLI_PRIVATE_KEY =
+	process.env.OPTIMISM_GOERLI_PRIVATE_KEY !== undefined ? process.env.OPTIMISM_GOERLI_PRIVATE_KEY : ""
+const OPTIMISM_GOERLI_EXPLORER_API_KEY = process.env.OPTIMISM_GOERLI_EXPLORER_API_KEY
+
+const LINEA_RPC_URL = "https://rpc.goerli.linea.build"
+const LINEA_PRIVATE_KEY = process.env.LINEA_PRIVATE_KEY !== undefined ? process.env.LINEA_PRIVATE_KEY : ""
+const LINEA_EXPLORER_API_KEY = process.env.LINEA_EXPLORER_API_KEY
 
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY
 const REPORT_GAS = process.env.REPORT_GAS
@@ -41,17 +47,23 @@ module.exports = {
 			chainId: 31337,
 			blockConfirmations: 1,
 		},
-		goerli: {
-			chainId: 5,
-			blockConfirmations: 6,
-			url: GOERLI_RPC_URL,
-			accounts: [GOERLI_RPIVATE_KEY],
-		},
 		mumbai: {
 			chainId: 80001,
 			blockConfirmations: 6,
 			url: MUMBAI_RPC_URL,
 			accounts: [MUMBAI_PRIVATE_KEY],
+		},
+		"opt-goerli": {
+			chainId: 420,
+			blockConfirmations: 6,
+			url: OPTIMISM_GOERLI_RPC_URL,
+			accounts: [OPTIMISM_GOERLI_PRIVATE_KEY],
+		},
+		linea: {
+			chainId: 59140,
+			blockConfirmations: 6,
+			url: LINEA_RPC_URL,
+			accounts: [LINEA_PRIVATE_KEY],
 		},
 	},
 	namedAccounts: {
@@ -73,20 +85,28 @@ module.exports = {
 	},
 	etherscan: {
 		apiKey: {
-			goerli: GOERLI_EXPLORER_API_KEY,
 			polygonMumbai: MUMBAI_EXPLORER_API_KEY,
-			// aurora: "",
+			"opt-goerli": OPTIMISM_GOERLI_EXPLORER_API_KEY,
+			linea: LINEA_EXPLORER_API_KEY,
 		},
-		// customChains: [
-		// 	{
-		// 		network: "aurora",
-		// 		chainId: 1313161555,
-		// 		urls: {
-		// 			apiURL: "https://explorer.testnet.aurora.dev/api",
-		// 			browserURL: "https://explorer.testnet.aurora.dev",
-		// 		},
-		// 	},
-		// ],
+		customChains: [
+			{
+				network: "opt-goerli",
+				chainId: 420,
+				urls: {
+					apiURL: "https://api-goerli-optimism.etherscan.io/api",
+					browserURL: "https://api-goerli-optimism.etherscan.io",
+				},
+			},
+			{
+				network: "linea",
+				chainId: 59140,
+				urls: {
+					apiURL: "https://explorer.goerli.linea.build/api",
+					browserURL: "https://explorer.goerli.linea.build",
+				},
+			},
+		],
 	},
 	dodoc: {
 		runOnCompile: false,

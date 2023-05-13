@@ -3,7 +3,7 @@ const { ethers } = require("hardhat")
 const constants = {
 	developmentChains: ["hardhat", "localhost"],
 	testNetChains: ["mumbai"],
-	disabledVerificationNetworks: ["aurora"],
+	disabledVerificationNetworks: [""],
 	NULL_ADDRESS: ethers.constants.AddressZero,
 	FRONTEND_FILE_PATH: "",
 }
@@ -11,8 +11,8 @@ const constants = {
 const scriptsConfig = {
 	TurtleShell: {
 		mint: {
-			ipfsHash: "ipfs://QmRPDqxUmXxv7uRZmNZiQZuJp9LibebXqJZkxvShbVpT54",
-			contractAddress: "0x560AF63C17406F9Abaf6e95dED8BF7a4E75118Aa",
+			ipfsHash: "ipfs://testHash",
+			contractAddress: "0x4e8EbD8f1225A01335Fcd851898df60555A36e17",
 		},
 	},
 }
@@ -28,17 +28,16 @@ const contractsConfig = {
 }
 
 const networkConfig = {
-	5: {
-		name: "goerli",
-		contracts: contractsConfig,
-		forTests: [],
-	},
 	80001: {
 		name: "mumbai",
 		contracts: contractsConfig,
 	},
-	1313161555: {
-		name: "aurora",
+	420: {
+		name: "opt-goerli",
+		contracts: contractsConfig,
+	},
+	59140: {
+		name: "linea",
 		contracts: contractsConfig,
 	},
 	31337: {
