@@ -11,7 +11,10 @@ const Landingpage = () => (
 	<>
 	<div className="borders">
 	  <Navbar />
+	  </div>
 	  <Hero/>
+	  <div className="borders">
+	  
 	  <Badge/>
 	  <Standards/>
 	  <Ecosystem/>
