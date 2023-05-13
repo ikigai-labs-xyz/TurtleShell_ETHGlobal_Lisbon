@@ -15,6 +15,7 @@ const config = {
     process.env.GOERLI_OPTIMISM_ETHERSCAN_API_KEY,
   POLYGONSCAN_API_KEY: process.env.POLYGONSCAN_API_KEY,
   LINEA_API_KEY: process.env.LINEA_API_KEY,
+  ZKEVM_API_KEY: process.env.ZKEVM_POLYGONSCAN_API_KEY,
   ALCHEMY_API_KEY: process.env.ALCHEMY_API_KEY,
 };
 
