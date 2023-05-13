@@ -8,7 +8,7 @@ interface SourceCode {
 }
 
 interface Params {
-  sourceCode: string | undefined;
+  sourceCode: string[] | undefined;
 }
 
 const sourceCodes: SourceCode[] = [{ rawCode: 'sourceCodeHere', typeName: '' }];

@@ -47,9 +47,6 @@ export class SourceCodeService {
       .pipe(
         map((response) => {
           const raw = response.data.result[0].SourceCode;
-          if (typeof raw === 'string') {
-            return { sources: [raw] };
-          }
 
           let processed = raw;
           if (processed.startsWith('{{') && processed.endsWith('}}')) {
@@ -57,7 +54,14 @@ export class SourceCodeService {
           }
 
           const sources: string[] = [];
-          const sourcesObj: SourceCodeObj = JSON.parse(processed);
+          let sourcesObj: SourceCodeObj;
+          try {
+            sourcesObj = JSON.parse(processed);
+          } catch (e) {
+            return {
+              sources: [processed],
+            };
+          }
 
           for (const [, value] of Object.entries(sourcesObj.sources)) {
             sources.push(value.content);
@@ -78,9 +82,6 @@ export class SourceCodeService {
       .pipe(
         map((response) => {
           const raw = response.data.result[0].SourceCode;
-          if (typeof raw === 'string') {
-            return { sources: raw };
-          }
 
           let processed = raw;
           if (processed.startsWith('{{') && processed.endsWith('}}')) {
@@ -88,7 +89,14 @@ export class SourceCodeService {
           }
 
           const sources: string[] = [];
-          const sourcesObj: SourceCodeObj = JSON.parse(processed);
+          let sourcesObj: SourceCodeObj;
+          try {
+            sourcesObj = JSON.parse(processed);
+          } catch (e) {
+            return {
+              sources: [processed],
+            };
+          }
 
           for (const [, value] of Object.entries(sourcesObj.sources)) {
             sources.push(value.content);
