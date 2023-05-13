@@ -1,5 +1,5 @@
 import Spinner from "../Spinner"
-import ContractCard from "./ContractCard"
+import ContractCard, { CardType } from "./ContractCard"
 
 export default function PerformAudit({
   getContractsLoading,
@@ -31,6 +31,7 @@ export default function PerformAudit({
               isSelected={isSelected}
               setSelectedContract={setSelectedContract}
               contract={contract}
+              cardType={CardType.onPerform}
             />
           )
         })}

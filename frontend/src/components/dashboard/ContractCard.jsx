@@ -12,6 +12,7 @@ export default function ContractCard({
   setSelectedContract,
   contract,
   cardType,
+  grade,
 }) {
   const chainName = chainIdToName[contract.chain?.toString()]
 
@@ -129,6 +130,16 @@ export default function ContractCard({
           <div className="flex justify-center mt-4 cursor-pointer">
             {chainName}
           </div>
+        </>
+      )}
+
+      {cardType === CardType.onMint && (
+        <>
+          <div>
+            <div>grade</div>
+          </div>
+
+          <div className="flex justify-center mt-4 cursor-pointer">{grade}</div>
         </>
       )}
     </div>
