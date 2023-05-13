@@ -125,12 +125,11 @@ export default function Dashboard() {
     }
   }
 
-  return (
-    <div className="h-screen w-screen bg-app-bg">
-      <NavBar />
-
-      <main className="bg-[#0B0C15] flex min-h-screen flex-col items-center justify-between p-24">
-        {pageState === PageState.performAudit && (
+  function renderContent() {
+    let content = ""
+    switch (pageState) {
+      case PageState.performAudit:
+        content = (
           <>
             <div className="w-full items-center justify-between mb-4">
               <h2 className="flex w-full justify-center text-center font-bold leading-[3rem] text-[#DBDBDB] text-4xl">
@@ -225,11 +224,11 @@ export default function Dashboard() {
               })}
 
               {/* <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        ></a> */}
+					href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+					className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+					target="_blank"
+					rel="noopener noreferrer"
+				  ></a> */}
             </div>
 
             <div className="text-center">
@@ -241,7 +240,33 @@ export default function Dashboard() {
               </button>
             </div>
           </>
-        )}
+        )
+        break
+
+      case PageState.mintNft:
+        content = (
+          <>
+            <div className="w-full items-center justify-between mb-4">
+              <h2 className="flex w-full justify-center text-center font-bold leading-[3rem] text-[#DBDBDB] text-4xl">
+                Congrats! 🎉
+              </h2>
+
+              <div>The AI model has scanned your contract.</div>
+              <div>Mint your security badge now.</div>
+            </div>
+          </>
+        )
+    }
+
+    return content
+  }
+
+  return (
+    <div className="h-screen w-screen bg-app-bg">
+      <NavBar />
+
+      <main className="bg-[#0B0C15] flex min-h-screen flex-col items-center justify-between p-24">
+        {renderContent()}
       </main>
     </div>
   )
