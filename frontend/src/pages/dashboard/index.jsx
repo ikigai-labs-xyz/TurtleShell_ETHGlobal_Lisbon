@@ -174,6 +174,7 @@ export default function Dashboard() {
             contract={selectedContract}
             loading={loading}
             score={score}
+            audits={audits}
             mintNft={onMint}
           />
         )

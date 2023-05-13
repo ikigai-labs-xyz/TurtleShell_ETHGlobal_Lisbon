@@ -1,16 +1,18 @@
 import ContractCard, { CardType } from "./ContractCard"
 import Spinner from "../Spinner"
 
-export default function MintNft({ contract, loading, mintNft, score }) {
+export default function MintNft({ contract, loading, mintNft, score, audits }) {
   return (
     <>
       <div className="w-full items-center justify-between mb-4">
-        <h2 className="flex w-full justify-center text-center font-bold leading-[3rem] text-[#DBDBDB] text-4xl">
+        <h2 className="flex w-full justify-center text-center font-bold leading-[3rem] text-[#DBDBDB] text-4xl mb-4">
           Congrats! 🎉
         </h2>
 
-        <div>The AI model has scanned your contract.</div>
-        <div>Mint your security badge now.</div>
+        <div className="text-[#8594AB] text-center">
+          <div>The AI model has scanned your contract.</div>
+          <div>Mint your security badge now.</div>
+        </div>
       </div>
 
       <div className="mb-4 flex flex-wrap justify-center text-sm">
@@ -23,6 +25,10 @@ export default function MintNft({ contract, loading, mintNft, score }) {
           cardType={CardType.onMint}
           grade={score}
         />
+
+        <div>
+          <pre>{audits?.map?.((audit) => audit.vulnerabilityType)}</pre>
+        </div>
       </div>
 
       <div className="text-center">
