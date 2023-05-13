@@ -26,7 +26,7 @@ export default function MintNft({ contract, loading, mintNft, score, audits }) {
           grade={score}
         />
 
-        <div>
+        <div className="m-4 p-4 w-[360px] bg-black rounded-sm">
           <pre>{audits?.map?.((audit) => audit.vulnerabilityType)}</pre>
         </div>
       </div>
