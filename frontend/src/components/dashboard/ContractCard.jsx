@@ -121,6 +121,18 @@ export default function ContractCard({
           </div>
         </>
       )}
+
+      {cardType === CardType.onMint && (
+        <>
+          <div>
+            <div>security data provided by</div>
+          </div>
+
+          <div className="flex justify-center mt-4 cursor-pointer">
+            {chainName}
+          </div>
+        </>
+      )}
     </div>
   )
 }
