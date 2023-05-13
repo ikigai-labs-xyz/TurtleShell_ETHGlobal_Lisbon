@@ -10,6 +10,7 @@ interface ContractsParams {
 
 const endpoints: string[] = [
   `https://api-testnet.polygonscan.com/api?module=account&action=txlist&address={address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey={apiKey}`,
+  `https://api-goerli-optimism.etherscan.io/api?module=account&action=txlist&address={address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey={apiKey}`,
 ];
 
 @Injectable()
@@ -25,9 +26,12 @@ export class ContractsService {
       let chain: number;
 
       switch (true) {
-        case url.includes('etherscan'):
-          url = url.replace('{apiKey}', config.ETHERSCAN_API_KEY);
-          chain = 5;
+        case url.includes('goerli-optimism'):
+          url = url.replace(
+            '{apiKey}',
+            config.GOERLI_OPTIMISM_ETHERSCAN_API_KEY,
+          );
+          chain = 420;
           break;
         case url.includes('polygonscan'):
           url = url.replace('{apiKey}', config.POLYGONSCAN_API_KEY);

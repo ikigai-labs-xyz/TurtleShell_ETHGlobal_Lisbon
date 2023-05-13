@@ -5,6 +5,7 @@ import config from 'src/config';
 
 enum Chain {
   MUMBAI = '80001',
+  OPT_GOERLI = '420',
 }
 
 interface Params {
@@ -31,6 +32,8 @@ export class SourceCodeService {
     switch (params.chain) {
       case Chain.MUMBAI:
         return this.getPolygonScanSourceCode(params);
+      case Chain.OPT_GOERLI:
+        return this.getOptimismScanSourceCode(params);
       default:
         throw new BadRequestException('Invalid chain type');
     }
@@ -39,7 +42,38 @@ export class SourceCodeService {
   private getPolygonScanSourceCode(params: Params) {
     return this.sourceCodeService
       .get(
-        `https://api-testnet.polygonscan.com/api?module=contract&action=getsourcecode&address=${params.address}&apikey=${config.ETHERSCAN_API_KEY}}`,
+        `https://api-testnet.polygonscan.com/api?module=contract&action=getsourcecode&address=${params.address}&apikey=${config.POLYGONSCAN_API_KEY}}`,
+      )
+      .pipe(
+        map((response) => {
+          const raw = response.data.result[0].SourceCode;
+          if (typeof raw === 'string') {
+            return { sources: [raw] };
+          }
+
+          let processed = raw;
+          if (processed.startsWith('{{') && processed.endsWith('}}')) {
+            processed = raw.substring(1, raw.length - 1);
+          }
+
+          const sources: string[] = [];
+          const sourcesObj: SourceCodeObj = JSON.parse(processed);
+
+          for (const [, value] of Object.entries(sourcesObj.sources)) {
+            sources.push(value.content);
+          }
+
+          return {
+            sources,
+          };
+        }),
+      );
+  }
+
+  private getOptimismScanSourceCode(params: Params) {
+    return this.sourceCodeService
+      .get(
+        `https://api-goerli-optimism.etherscan.io/api?module=contract&action=getsourcecode&address=${params.address}&apikey=${config.GOERLI_OPTIMISM_ETHERSCAN_API_KEY}}`,
       )
       .pipe(
         map((response) => {
