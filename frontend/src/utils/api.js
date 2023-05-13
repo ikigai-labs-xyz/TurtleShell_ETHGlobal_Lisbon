@@ -11,22 +11,26 @@ export const getSourceCodeOfContract = (contractAddress, chain) => {
   )
 }
 
-export const getAuditsOfContract = (contractAddress) => {
-  return axios.get(`${backendUrl}/getAuditOf/${contractAddress}`)
+export const getAuditsOfContract = (sources) => {
+  return axios.post(`${backendUrl}/getAuditData`, {
+    sources,
+  })
 }
 
-export const getScoreOfContract = (contractAddress) => {
-  return axios.post(`${backendUrl}/getScoreOf/${contractAddress}`)
+export const getScoreOfContract = (vulnerabilities) => {
+  return axios.post(`${backendUrl}/getScore`, {
+    vulnerabilities,
+  })
 }
 
-export const getContractType = (sourceCode) => {
-  return axios.get(`${backendUrl}/getContractType/${sourceCode}`)
+export const getContractType = (sources) => {
+  return axios.post(`${backendUrl}/getContractType`, {
+    sources,
+  })
 }
 
 export const uploadToIpfs = (json) => {
-  return axios.post(`${backendUrl}/uploadToIpfs`, {
-    data: json,
-  })
+  return axios.post(`${backendUrl}/uploadToIpfs`, json)
 }
 
 export const getBackendSignature = (

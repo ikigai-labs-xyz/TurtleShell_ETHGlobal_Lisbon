@@ -46,17 +46,14 @@ export default function Dashboard() {
         selectedContract.chain
       )
 
-      const [audits, score, contractType] = await Promise.all([
-        getAuditsOfContract(selectedContract),
-        getScoreOfContract(selectedContract),
+      const [audits, contractType] = await Promise.all([
+        getAuditsOfContract(sourceCode),
         getContractType(sourceCode),
       ])
 
       if (
         !audits ||
         typeof audits !== "string" ||
-        !score ||
-        typeof score !== "string" ||
         !contractType ||
         typeof contractType !== "string"
       ) {
@@ -65,8 +62,25 @@ export default function Dashboard() {
             `Failed to retrieve audits or score, trying again retry count ${++retryCount}`
           )
           performAudit(selectedContract, ++retryCount)
+        } else {
+          throw new Error("Failed to retrieve audits or score")
         }
-        throw new Error("Failed to retrieve audits or score")
+      }
+
+      const score = getScoreOfContract(
+        selectedContract,
+        audits?.map((auditData) => auditData.vulnerabilityType)
+      )
+
+      if (!score || typeof score !== "string") {
+        if (retryCount < 3) {
+          console.log(
+            `Failed to retrieve audits or score, trying again retry count ${++retryCount}`
+          )
+          performAudit(selectedContract, ++retryCount)
+        } else {
+          throw new Error("Failed to retrieve audits or score")
+        }
       }
 
       setPageState(PageState.mintNft)
@@ -83,6 +97,28 @@ export default function Dashboard() {
     try {
       setLoading(true)
 
+      const ipfsData = {
+        address: selectedContract.address,
+        chain: selectedContract.chain,
+        grade: score,
+        vulnerabilities: audits?.map(
+          (auditData) => auditData.vulnerabilityType
+        ),
+        contractType,
+      }
+      const ipfsCid = await uploadToIpfs(ipfsData)
+
+      if (!ipfsCid || typeof ipfsCid !== "string") {
+        if (retryCount < 3) {
+          console.log(
+            `Failed to upload to IPFS, trying again retry count ${++retryCount}`
+          )
+          onMint(selectedContract, ++retryCount)
+        } else {
+          throw new Error("Failed to upload to IPFS")
+        }
+      }
+
       const signature = await getBackendSignature(
         selectedContract.chain,
         selectedContract.address,
@@ -97,21 +133,9 @@ export default function Dashboard() {
             `Failed to retrieve signature, trying again retry count ${++retryCount}`
           )
           onMint(selectedContract, ++retryCount)
+        } else {
+          throw new Error("Failed to retrieve signature")
         }
-        throw new Error("Failed to retrieve signature")
-      }
-
-      const ipfsData = JSON.stringify({ audits, score, contractType })
-      const ipfsCid = await uploadToIpfs(ipfsData)
-
-      if (!ipfsCid || typeof ipfsCid !== "string") {
-        if (retryCount < 3) {
-          console.log(
-            `Failed to upload to IPFS, trying again retry count ${++retryCount}`
-          )
-          onMint(selectedContract, ++retryCount)
-        }
-        throw new Error("Failed to upload to IPFS")
       }
 
       const tx = turtleContract.mint(signature)

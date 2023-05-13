@@ -1,6 +1,7 @@
 import classNames from "classNames"
-import { chainIdToExplorerUrl, chainIdToName } from "../../utils/chainMapping"
+import { useState } from "react"
 import WhiteLogo from "../../assets/logo-white.svg"
+import { chainIdToExplorerUrl, chainIdToName } from "../../utils/chainMapping"
 
 const CardType = {
   onPerform: "onPerform",
