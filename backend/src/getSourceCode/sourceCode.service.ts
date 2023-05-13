@@ -4,7 +4,6 @@ import { map } from 'rxjs/operators';
 import config from 'src/config';
 
 enum Chain {
-  GOERLI = '5',
   MUMBAI = '80001',
 }
 
@@ -30,25 +29,32 @@ export class SourceCodeService {
     }
 
     switch (params.chain) {
-      case Chain.GOERLI:
-        return this.getEtherscanSourceCode(params);
+      case Chain.MUMBAI:
+        return this.getPolygonScanSourceCode(params);
       default:
         throw new BadRequestException('Invalid chain type');
     }
   }
 
-  private getEtherscanSourceCode(params: Params) {
+  private getPolygonScanSourceCode(params: Params) {
     return this.sourceCodeService
       .get(
-        `https://api-goerli.etherscan.io/api?module=contract&action=getsourcecode&address=${params.address}&apikey=${config.ETHERSCAN_API_KEY}}`,
+        `https://api-testnet.polygonscan.com/api?module=contract&action=getsourcecode&address=${params.address}&apikey=${config.ETHERSCAN_API_KEY}}`,
       )
       .pipe(
         map((response) => {
           const raw = response.data.result[0].SourceCode;
-          const trimmed = raw.substring(1, raw.length - 1);
+          if (typeof raw === 'string') {
+            return { sources: raw };
+          }
+
+          let processed = raw;
+          if (processed.startsWith('{{') && processed.endsWith('}}')) {
+            processed = raw.substring(1, raw.length - 1);
+          }
 
           const sources: string[] = [];
-          const sourcesObj: SourceCodeObj = JSON.parse(trimmed);
+          const sourcesObj: SourceCodeObj = JSON.parse(processed);
 
           for (const [, value] of Object.entries(sourcesObj.sources)) {
             sources.push(value.content);

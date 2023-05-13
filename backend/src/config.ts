@@ -4,7 +4,7 @@ dotenv.config();
 const config = {
   ML_AUDIT_URL: 'http://13.50.55.163:8511/v1/api/aduit',
   TURTLESHELL_ADDRESS: {
-    5: '',
+    80001: '0x6F6408cc131001EfE2853955b46D948aCa13eeE5',
   },
   PRIVATE_KEY: process.env.TURTLESHELL_PRIVATE_KEY,
   PINATA_API_KEY: process.env.PINATA_API_KEY,
