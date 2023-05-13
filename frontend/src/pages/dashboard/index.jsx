@@ -151,8 +151,8 @@ export default function Dashboard() {
       const signature = await getBackendSignature(
         selectedContract.chain,
         selectedContract.address,
-        ipfsResult.data,
-        (score * 1e3).toString(),
+        `ipfs://${ipfsResult.data}`,
+        score * 1e3,
         contractType
       )
 
@@ -171,12 +171,12 @@ export default function Dashboard() {
       const turtleContract = getTurtleTokenContract(selectedContract.chain)
       const mintData = {
         to: selectedContract.address,
-        tokenURI: ipfsResult.data,
-        grade: (score * 1e3).toString(),
+        tokenURI: `ipfs://${ipfsResult.data}`,
+        grade: score * 1e3,
         contractType,
       }
 
-      console.log({ mintData })
+      console.log({ mintData, signature: signature.data })
 
       const tx = turtleContract.connect(signer).mint(mintData, signature.data)
 
