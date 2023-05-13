@@ -14,14 +14,14 @@ export default function NavBar() {
 					</div>
 					<div className="flex flex-col items-center justify-center gap-20">
 						<Link
-							to="/ai-app"
+							to="/dashboard"
 							className="flex mx-auto w-full flex-col gap-2 items-center justify-center"
 						>
 							<FiHome className="text-secondary-grey" size="34" />
 							<span className="text-secondary-grey font-semibold text-[16px]">Home</span>
 						</Link>
 						<Link
-							to="/ai-app/my-badges"
+							to="/dashboard/my-badges"
 							className="flex mx-auto w-full flex-col gap-2 items-center justify-center"
 						>
 							<BiCheckShield className="text-secondary-grey" size="36" />
