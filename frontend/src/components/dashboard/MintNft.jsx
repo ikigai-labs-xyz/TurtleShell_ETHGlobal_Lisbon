@@ -3,8 +3,6 @@ import Spinner from "../Spinner"
 import { BsArrowRightShort } from "react-icons/bs"
 
 export default function MintNft({ contract, loading, mintNft, score, audits }) {
-  console.log("audits", audits)
-
   return (
     <>
       <div className="w-full items-center justify-between mb-4">
