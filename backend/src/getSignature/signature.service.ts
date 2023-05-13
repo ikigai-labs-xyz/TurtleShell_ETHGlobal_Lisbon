@@ -55,7 +55,7 @@ export class SignatureService {
             { name: 'to', type: 'address' },
             { name: 'tokenURI', type: 'string' },
             { name: 'grade', type: 'string' },
-            { name: 'contractType', type: 'string' },
+            { name: 'contractType', type: 'bytes32' },
           ],
         },
         mintRequest,
