@@ -3,6 +3,8 @@ import Spinner from "../Spinner"
 import { BsArrowRightShort } from "react-icons/bs"
 
 export default function MintNft({ contract, loading, mintNft, score, audits }) {
+  console.log("audits", audits)
+
   return (
     <>
       <div className="w-full items-center justify-between mb-4">
@@ -27,8 +29,20 @@ export default function MintNft({ contract, loading, mintNft, score, audits }) {
           grade={score}
         />
 
-        <div className="m-4 p-4 w-[360px] bg-black rounded-sm">
-          <pre>{audits?.map?.((audit) => audit.vulnerabilityType)}</pre>
+        <div className="m-4 p-4 w-[360px] bg-black rounded-sm text-[#8594AB] ">
+          <pre className="whitespace-pre-wrap break-words">
+            {JSON.stringify(
+              {
+                address: contract.address,
+                vulnerabilities: audits?.map?.(
+                  (audit) => audit.vulnerabilityType
+                ),
+                recommendations: [{ solVersion: "0.8.19" }],
+              },
+              null,
+              2
+            )}
+          </pre>
         </div>
       </div>
 
