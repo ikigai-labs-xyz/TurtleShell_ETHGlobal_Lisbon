@@ -1,4 +1,3 @@
-import { ethers } from "ethers"
 import { useState } from "react"
 import MintNft from "../../components/dashboard/MintNft"
 import NavBar from "../../components/dashboard/Navbar"
@@ -12,7 +11,9 @@ import {
   getSourceCodeOfContract,
   uploadToIpfs,
 } from "../../utils/api"
-import { turtleContract } from "../../utils/contracts"
+import { getTurtleTokenContract } from "../../utils/contracts"
+import { useAccount, useSigner } from "wagmi"
+import NoWallet from "../../components/dashboard/NoWallet"
 
 const PageState = {
   performAudit: "performAudit",
@@ -22,70 +23,93 @@ const PageState = {
 export default function Dashboard() {
   const [pageState, setPageState] = useState(PageState.performAudit)
 
+  const { address } = useAccount()
+  const { data: signer } = useSigner()
+
   const [selectedContract, setSelectedContract] = useState({
-    address: ethers.constants.AddressZero,
-    chain: 5,
+    address: "0x081E56a6b25C2A42A91996e6Bb655641c101FD99",
+    chain: 80001,
   })
   const [loading, setLoading] = useState(false)
   const [audits, setAudits] = useState("")
   const [score, setScore] = useState("")
   const [contractType, setContractType] = useState("")
+  const [error, setError] = useState("")
 
-  const { loading: getContractsLoading, contracts } = useGetContracts(
-    "0x4bFC74983D6338D3395A00118546614bB78472c2"
-  )
+  const {
+    loading: getContractsLoading,
+    loaded: getContractsLoaded,
+    contracts,
+  } = useGetContracts(address)
 
   async function performAudit(selectedContract, retryCount = 0) {
     if (!selectedContract) return
 
     try {
+      setError("")
       setLoading(true)
 
-      const sourceCode = getSourceCodeOfContract(
+      const sourceCode = await getSourceCodeOfContract(
         selectedContract.address,
         selectedContract.chain
       )
 
+      if (
+        sourceCode.data &&
+        typeof sourceCode.data?.sources === "string" &&
+        sourceCode?.data.sources === ""
+      ) {
+        setError("No audits found. This contract might not have been verified.")
+      }
+
+      if (sourceCode.status !== 200) {
+        if (retryCount < 3) {
+          console.log(
+            `Failed to retrieve source code, trying again retry count ${++retryCount}`
+          )
+          performAudit(selectedContract, ++retryCount)
+          return
+        } else {
+          throw new Error("Failed to retrieve source code")
+        }
+      }
+
       const [audits, contractType] = await Promise.all([
-        getAuditsOfContract(sourceCode),
-        getContractType(sourceCode),
+        getAuditsOfContract(sourceCode.data),
+        getContractType(sourceCode.data),
       ])
 
-      if (
-        !audits ||
-        typeof audits !== "string" ||
-        !contractType ||
-        typeof contractType !== "string"
-      ) {
+      if (audits.status !== 201 || contractType.status !== 201) {
         if (retryCount < 3) {
           console.log(
-            `Failed to retrieve audits or score, trying again retry count ${++retryCount}`
+            `Failed to retrieve audits or contract type, trying again retry count ${++retryCount}`
           )
           performAudit(selectedContract, ++retryCount)
+          return
         } else {
-          throw new Error("Failed to retrieve audits or score")
+          throw new Error("Failed to retrieve audits or contract type")
         }
       }
 
-      const score = getScoreOfContract(
-        selectedContract,
-        audits?.map((auditData) => auditData.vulnerabilityType)
+      const score = await getScoreOfContract(
+        audits.data?.map((auditData) => auditData.vulnerabilityType)
       )
 
-      if (!score || typeof score !== "string") {
+      if (score.status !== 201) {
         if (retryCount < 3) {
           console.log(
-            `Failed to retrieve audits or score, trying again retry count ${++retryCount}`
+            `Failed to retrieve score, trying again retry count ${++retryCount}`
           )
           performAudit(selectedContract, ++retryCount)
+          return
         } else {
-          throw new Error("Failed to retrieve audits or score")
+          throw new Error("Failed to retrieve score")
         }
       }
 
-      setAudits(audits)
-      setContractType(contractType)
-      setScore(score)
+      setAudits(audits.data)
+      setContractType(contractType.data)
+      setScore(+score.data / 1e3)
 
       setPageState(PageState.mintNft)
     } catch (error) {
@@ -95,7 +119,7 @@ export default function Dashboard() {
     }
   }
 
-  async function onMint(selectedContract, retryCount = 0) {
+  async function onMint(retryCount = 0) {
     if (!selectedContract || !score || !audits || !contractType) return
 
     try {
@@ -110,14 +134,15 @@ export default function Dashboard() {
         ),
         contractType,
       }
-      const ipfsCid = await uploadToIpfs(ipfsData)
+      const ipfsResult = await uploadToIpfs(ipfsData)
 
-      if (!ipfsCid || typeof ipfsCid !== "string") {
+      if (ipfsResult.status !== 201) {
         if (retryCount < 3) {
           console.log(
             `Failed to upload to IPFS, trying again retry count ${++retryCount}`
           )
-          onMint(selectedContract, ++retryCount)
+          onMint(++retryCount)
+          return
         } else {
           throw new Error("Failed to upload to IPFS")
         }
@@ -126,25 +151,36 @@ export default function Dashboard() {
       const signature = await getBackendSignature(
         selectedContract.chain,
         selectedContract.address,
-        ipfsCid,
-        score,
+        `ipfs://${ipfsResult.data}`,
+        score * 1e3,
         contractType
       )
 
-      if (!signature || typeof signature !== "string") {
+      if (signature.status !== 200) {
         if (retryCount < 3) {
           console.log(
             `Failed to retrieve signature, trying again retry count ${++retryCount}`
           )
-          onMint(selectedContract, ++retryCount)
+          onMint(++retryCount)
+          return
         } else {
           throw new Error("Failed to retrieve signature")
         }
       }
 
-      const tx = turtleContract.mint(signature)
+      const turtleContract = getTurtleTokenContract(selectedContract.chain)
+      const mintData = {
+        to: selectedContract.address,
+        tokenURI: `ipfs://${ipfsResult.data}`,
+        grade: score * 1e3,
+        contractType,
+      }
 
-      await tx.wait()
+      console.log({ mintData, signature: signature.data })
+
+      const tx = await turtleContract.connect(signer).mint(mintData, signature.data)
+
+      // await tx.wait()
     } catch (error) {
       console.error(`onMint error: ${error.message}`)
     } finally {
@@ -154,6 +190,12 @@ export default function Dashboard() {
 
   function renderContent() {
     let content = ""
+    if (!address) {
+      content = <NoWallet />
+
+      return content
+    }
+
     switch (pageState) {
       case PageState.performAudit:
         content = (
@@ -164,6 +206,7 @@ export default function Dashboard() {
             selectedContract={selectedContract}
             performAudit={performAudit}
             loading={loading}
+            loaded={getContractsLoaded}
           />
         )
         break
@@ -187,6 +230,8 @@ export default function Dashboard() {
     <div className="h-screen w-screen">
       <NavBar />
       <main className=" flex min-h-screen flex-col items-center justify-between p-24">
+        {error && <div className="text-red-500 text-xl">{error}</div>}
+
         {renderContent()}
       </main>
     </div>

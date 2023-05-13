@@ -12,6 +12,7 @@ const chainIdToExplorerUrl = {
   137: "https://polygonscan.com/address/",
   80001: "https://mumbai.polygonscan.com/address/",
   43114: "https://snowtrace.io/address/",
+  420: "https://goerli-optimism.etherscan.io/address/",
 }
 
 export { chainIdToName, chainIdToExplorerUrl }
