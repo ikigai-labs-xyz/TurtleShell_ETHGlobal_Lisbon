@@ -1,13 +1,8 @@
-import React from 'react';
-import { useWindowSize } from 'react-use';
-import Confetti from 'react-confetti';
-import { chainIdToExplorerUrl } from "../../utils/chainMapping";
+import { chainIdToExplorerUrl } from "../../utils/chainMapping"
 
 export default function MintSuccess({ hash, contract }) {
-  const explorerUrl = chainIdToExplorerUrl[contract.chain?.toString()];
-  const explorerFullurl = explorerUrl && `${explorerUrl}/tx/${hash}`;
-
-  const { width, height } = useWindowSize();
+  const explorerUrl = chainIdToExplorerUrl[contract.chain?.toString()]
+  const explorerFullurl = explorerUrl && `${explorerUrl}/tx/${hash}`
 
   return (
     <>
@@ -31,15 +26,6 @@ export default function MintSuccess({ hash, contract }) {
           </div>
         </div>
       </div>
-
-      {/* Add the Confetti component with appropriate props */}
-      <Confetti
-        width={width}
-        height={height}
-        numberOfPieces={200} // Adjust the number of confetti pieces
-        colors={['#f44336', '#e91e63', '#9c27b0']} // Customize the colors
-        gravity={0.2} // Adjust the gravity value
-      />
     </>
-  );
+  )
 }
