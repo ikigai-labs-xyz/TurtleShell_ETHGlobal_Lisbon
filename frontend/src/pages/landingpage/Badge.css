@@ -1,20 +1,21 @@
 .section {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   margin-top: 80px;
-  padding: 0 40px;
 }
 
 .section-image {
   flex: 1;
   display: flex;
   justify-content: center;
+  margin-top:1rem;
 }
 
 .section-image img {
-  width: 150%;
-  max-height: 1000px; /* Increase the max height as needed */
+  width: 45%;
+  height: fit-content; /* Increase the max height as needed */
+  margin-top:2rem;
 }
 
 .section-text {

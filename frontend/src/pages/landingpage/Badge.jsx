@@ -5,7 +5,7 @@ import './Badge.css';
 function Badge() {
   return (
     <div className="section">
-      <div className="section-image">
+      <div className="section-image1">
         <img src={Badge_Image} alt="Badge" />
       </div>
       <div className="section-text">

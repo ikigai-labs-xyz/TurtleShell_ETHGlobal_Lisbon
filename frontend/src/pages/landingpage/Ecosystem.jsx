@@ -5,7 +5,7 @@ import './Ecosystem.css';
 function Ecosystem() {
   return (
     <div className="section">
-      <div className="section-image">
+      <div className="section-image3">
         <img className="image" src={Eco_Image} alt="Ecosystem" />
       </div>
       <div className="section-text">
