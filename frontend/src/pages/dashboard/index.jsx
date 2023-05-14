@@ -203,13 +203,12 @@ export default function Dashboard() {
   }
 
   function renderContent() {
-    let content = ""
+    let content = "";
     if (!address) {
-      content = <NoWallet />
-
-      return content
+      content = <NoWallet />;
+      return content;
     }
-
+  
     switch (pageState) {
       case PageState.performAudit:
         content = (
@@ -222,9 +221,9 @@ export default function Dashboard() {
             loading={loading}
             loaded={getContractsLoaded}
           />
-        )
-        break
-
+        );
+        break;
+  
       case PageState.mintNft:
         content = (
           <MintNft
@@ -234,18 +233,25 @@ export default function Dashboard() {
             audits={audits}
             mintNft={onMint}
           />
-        )
-        break
-
+        );
+        break;
+  
       case PageState.mintSuccess:
         content = (
           <MintSuccess hash={success.hash} contract={selectedContract} />
-        )
-        break
+        );
+        break;
+  
+      default:
+        content = (
+          <MintSuccess hash={success.hash} contract={selectedContract} />
+        );
+        break;
     }
-
-    return content
+  
+    return content;
   }
+  
 
   return (
     <div className="h-screen w-screen">
