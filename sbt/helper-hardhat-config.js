@@ -11,8 +11,10 @@ const constants = {
 const scriptsConfig = {
 	TurtleShell: {
 		mint: {
-			ipfsHash: "ipfs://testHash",
-			contractAddress: "0x4e8EbD8f1225A01335Fcd851898df60555A36e17",
+			ipfsHash: "ipfs://QmXuRPceYwgR2VzhJwzikpF7jgAP3tVEGSCX4Axqf777by",
+			contractAddress: "0x081E56a6b25C2A42A91996e6Bb655641c101FD99",
+			grade: "432",
+			contractType: "0x114128cb0f8de650cab6a5e6072b55901972ea7f8b246973f8edc4f09fd8d343",
 		},
 	},
 }
@@ -38,6 +40,10 @@ const networkConfig = {
 	},
 	59140: {
 		name: "linea",
+		contracts: contractsConfig,
+	},
+	1442: {
+		name: "zkevm",
 		contracts: contractsConfig,
 	},
 	31337: {

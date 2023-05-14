@@ -1,7 +1,7 @@
 const { network, ethers, getNamedAccounts } = require("hardhat")
 const { scriptsConfig, networkConfig } = require("../helper-hardhat-config")
 
-const main = async (ipfsHash, contractAddress) => {
+const main = async (ipfsHash, contractAddress, grade, contractType) => {
 	const chainId = network.config.chainId
 	const contractName = networkConfig[chainId].contracts.TurtleShellToken.name
 	const contract = await ethers.getContract(contractName)
@@ -25,17 +25,26 @@ const main = async (ipfsHash, contractAddress) => {
 	const mintRequest = {
 		to: contractAddress,
 		tokenURI: ipfsHash,
-		grade: 1000,
-		contractType: ethers.utils.keccak256(ethers.utils.toUtf8Bytes("testContractType")),
+		grade,
+		contractType,
 	}
 
 	const mintSignature = await deployer._signTypedData(domain, mintRequestTypes, mintRequest)
+
+	console.log(contractType)
+
+	console.log(mintSignature)
 
 	const tx = await contract.mint(mintRequest, mintSignature)
 	await tx.wait()
 }
 
-main(scriptsConfig.TurtleShell.mint.ipfsHash, scriptsConfig.TurtleShell.mint.contractAddress)
+main(
+	scriptsConfig.TurtleShell.mint.ipfsHash,
+	scriptsConfig.TurtleShell.mint.contractAddress,
+	scriptsConfig.TurtleShell.mint.grade,
+	scriptsConfig.TurtleShell.mint.contractType
+)
 	.then(() => process.exit(0))
 	.catch((e) => {
 		console.error(e)

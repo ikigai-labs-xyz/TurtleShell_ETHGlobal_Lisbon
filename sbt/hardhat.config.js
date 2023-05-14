@@ -22,6 +22,11 @@ const LINEA_RPC_URL = "https://rpc.goerli.linea.build"
 const LINEA_PRIVATE_KEY = process.env.LINEA_PRIVATE_KEY !== undefined ? process.env.LINEA_PRIVATE_KEY : ""
 const LINEA_EXPLORER_API_KEY = process.env.LINEA_EXPLORER_API_KEY
 
+const ZKEVM_RPC_URL =
+	process.env.RPC_URL !== undefined ? process.env.RPC_URL.replace("network", "polygonzkevm-testnet") : ""
+const ZKEVM_PRIVATE_KEY = process.env.ZKEVM_PRIVATE_KEY !== undefined ? process.env.ZKEVM_PRIVATE_KEY : ""
+const ZKEVM_EXPLOER_API_KEY = process.env.ZKEVM_EXPLOER_API_KEY
+
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY
 const REPORT_GAS = process.env.REPORT_GAS
 
@@ -64,6 +69,12 @@ module.exports = {
 			blockConfirmations: 6,
 			url: LINEA_RPC_URL,
 			accounts: [LINEA_PRIVATE_KEY],
+		},
+		zkevm: {
+			chainId: 1442,
+			blockConfirmations: 6,
+			url: ZKEVM_RPC_URL,
+			accounts: [ZKEVM_PRIVATE_KEY],
 		},
 	},
 	namedAccounts: {

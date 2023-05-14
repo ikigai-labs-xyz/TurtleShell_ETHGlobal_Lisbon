@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "./interfaces/IERC5192.sol";
+import "./interfaces/ITurtleShellToken.sol";
 
 error TurtleShellToken__InvalidSignature();
 error TurtleShellToken__SignatureAlreadyUsed();
@@ -17,7 +18,7 @@ error TurtleShellToken__InvalidGrade();
  * @author Philipp Keinberger
  * @notice Non-Transferable-Token that allows for minting Security Badges.
  */
-contract TurtleShellToken is ERC721, EIP712, IERC5192, Ownable {
+contract TurtleShellToken is ITurtleShellToken, ERC721, EIP712, IERC5192, Ownable {
 	using Counters for Counters.Counter;
 	using ECDSA for bytes32;
 	Counters.Counter private s_tokenIds;
@@ -27,14 +28,6 @@ contract TurtleShellToken is ERC721, EIP712, IERC5192, Ownable {
 		string tokenURI;
 		uint256 grade;
 		bytes32 contractType;
-	}
-
-	struct TokenData {
-		uint256 grade;
-		bytes32 contractType;
-		address issuer;
-		address owner;
-		bytes _tokenURI;
 	}
 
 	bytes32 private constant MINTREQUEST_TYPEHASH =
@@ -117,12 +110,12 @@ contract TurtleShellToken is ERC721, EIP712, IERC5192, Ownable {
 		return true;
 	}
 
-	function getBadgeData(uint256 tokenId) external view returns (TokenData memory) {
+	function getBadgeData(uint256 tokenId) external view override returns (TokenData memory) {
 		_requireMinted(tokenId);
 		return s_tokenData[tokenId];
 	}
 
-	function getTokenIdOfOwner(address owner) external view returns (uint256) {
+	function getTokenIdOfOwner(address owner) external view override returns (uint256) {
 		uint256 balance = balanceOf(owner);
 		require(balance > 0, "This address doesn't own any NFTs");
 
