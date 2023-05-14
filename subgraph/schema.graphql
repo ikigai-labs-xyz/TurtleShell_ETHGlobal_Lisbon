@@ -1,0 +1,5 @@
+type SecurityBadge @entity(immutable: true) {
+	id: Bytes!
+	contractAddress: Bytes!
+	tokenId: BigInt!
+}
