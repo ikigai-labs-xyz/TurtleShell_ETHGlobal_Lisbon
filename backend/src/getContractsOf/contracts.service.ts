@@ -12,6 +12,7 @@ const endpoints: string[] = [
   `https://api-testnet.polygonscan.com/api?module=account&action=txlist&address={address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey={apiKey}`,
   `https://api-goerli-optimism.etherscan.io/api?module=account&action=txlist&address={address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey={apiKey}`,
   `https://explorer.goerli.linea.build/api?module=account&action=txlist&address={address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc`,
+  `https://testnet-zkevm.polygonscan.com/api?module=account&action=txlist&address={address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc`,
 ];
 
 @Injectable()
@@ -34,13 +35,17 @@ export class ContractsService {
           );
           chain = 420;
           break;
-        case url.includes('polygonscan'):
+        case url.includes('api-testnet'):
           url = url.replace('{apiKey}', config.POLYGONSCAN_API_KEY);
           chain = 80001;
           break;
         case url.includes('linea'):
           url = url.replace('{apiKey}', config.LINEA_API_KEY);
           chain = 59140;
+          break;
+        case url.includes('testnet-zkevm'):
+          url = url.replace('{apiKey}', config.ZKEVM_API_KEY);
+          chain = 1442;
           break;
         default:
           break;
