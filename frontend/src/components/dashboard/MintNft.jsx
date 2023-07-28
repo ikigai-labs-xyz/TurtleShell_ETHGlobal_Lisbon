@@ -11,7 +11,7 @@ export default function MintNft({ contract, loading, mintNft, score, audits }) {
         </h2>
 
         <div className="text-[#8594AB] text-center">
-          <div>The AI model has scanned your contract.</div>
+          <div>The AI Security Check has scanned your contract.</div>
           <div>Mint your security badge now.</div>
         </div>
       </div>
@@ -35,6 +35,8 @@ export default function MintNft({ contract, loading, mintNft, score, audits }) {
                 vulnerabilities: audits?.map?.(
                   (audit) => audit.vulnerabilityType
                 ),
+                grade: score,
+                cardType: mintNft.onMint,
                 recommendations: [{ solVersion: "0.8.19" }],
               },
               null,
